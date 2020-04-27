@@ -1,0 +1,30 @@
+{% extends "big_eggs/main.html" %}
+{% load octicons %}
+
+{% block content %}
+
+<h1>Huhn   
+    {% if not chicken.id %}
+        hinzufügen
+    {% else %}
+        ändern
+    {% endif %}
+</h1>
+
+<form action="{{ form_action }}" method="post">
+    <div class="form-group">
+    {% csrf_token %}
+    <table class="table">
+    {{ form }}
+    </table>
+    <div>
+        {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> {% endcomment %}
+        <button type="submit" class="btn btn-primary">Speichern</button>
+        {% if chicken.id %}
+            <a class="btn btn-danger" role="button" href="{% url 'chicken_delete' chicken.id %}" >Löschen</a>
+        {% endif %}
+    </div>
+    </div>
+</form>
+
+{% endblock content %}

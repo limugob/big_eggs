@@ -1,0 +1,19 @@
+{% extends "big_eggs/main.html" %}
+{% load octicons %}
+
+{% block content %}
+
+    Sind Sie sicher, dass Sie die Daten:<br>
+    {% for egg in eggs %}
+        {{ egg }} <br>
+    {% endfor %}
+    löschen möchten?<br>
+
+    <form method="post">
+        <div class="form-group">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger ">Löschen</button>
+        </div>
+    </form>
+
+{% endblock content %}

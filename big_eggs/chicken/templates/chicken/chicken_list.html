@@ -1,0 +1,41 @@
+{% extends "big_eggs/main.html" %}
+{% load octicons %}
+
+{% block content %}
+
+<h1>Hühner</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Gruppe</th>
+      <th scope="col">Huhn</th>
+      <th scope="col">Geschlecht</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for chicken in chicken_list %}
+      <tr>
+        <td>{{ forloop.counter }}</td>  
+        <td>{{ chicken.group.name }}</td>  
+        <td>{{ chicken }}</td>          
+        <td>{{ chicken.get_sex_display }}</td>
+        <td>
+          <a class="btn btn-outline-primary btn-sm" href="{% url 'chicken_update' chicken.id %}" >
+            {% octicon "pencil" %} 
+          </a>
+        </td>
+
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+<a class="btn btn-primary" href="{% url 'chicken_add'%}" >
+{% octicon "plus" scale=4 height=24 class="large" %} 
+<span style='padding-left: 0.7em'>Eingabe</span></a>
+
+{% endblock content %}

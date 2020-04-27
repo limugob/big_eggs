@@ -1,0 +1,22 @@
+{% extends "big_eggs/main.html" %}
+{% load octicons %}
+{% load chicken_utils %}
+
+{% block content %}
+
+    Sind Sie sicher, dass Sie die Daten:<br>
+    {{ object|to_class_name }}: {{ object }}
+    <br>
+    
+    
+    <br>löschen möchten?<br>
+
+    <form method="post">
+        <div class="form-group">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Löschen</button>
+            <a href="{{ object.get_absolute_url }}" class="btn btn-light">Nein, bitte Abbrechen</a>
+        </div>
+    </form>
+
+{% endblock content %}
