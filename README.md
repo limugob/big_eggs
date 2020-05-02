@@ -1,1 +1,3 @@
-# big_eggs
+# big eggs
+
+App for chicken farmer
