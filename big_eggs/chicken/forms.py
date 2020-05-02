@@ -8,9 +8,12 @@ def get_chicken_group_choices():
     return [(None, '---')] + list(ChickenGroup.objects.values_list('id', 'name').order_by('name'))
 
 
+def today_date():
+    return timezone.localdate(timezone.now())
+
 class EggBulkForm(forms.Form):
     date = forms.DateField(
-        initial=timezone.now().date(),
+        initial=today_date,
         widget=forms.TextInput(attrs={
             'type': 'date',
             'min': 1,
@@ -33,7 +36,7 @@ class EggBulkForm(forms.Form):
 
 class ChickenForm(forms.ModelForm):
     entry_date = forms.DateField(
-        initial=timezone.now().date(),
+        initial=today_date,
         widget=forms.TextInput(attrs={
             'type': 'date',
             'min': 1,
