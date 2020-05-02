@@ -31,6 +31,7 @@ class Chicken(models.Model):
     group = models.ForeignKey(ChickenGroup,
                               blank=True, null=True, on_delete=models.SET_NULL,
                               verbose_name='Gruppe')
+    hatching = models.DateTimeField('Schlupf', default=today_midnight)
     entry = models.DateTimeField('Zugang', default=today_midnight)
     departure = models.DateTimeField('Abgang', blank=True, null=True)
 
@@ -55,7 +56,10 @@ class Chicken(models.Model):
             raise ValidationError({
                 'departure': 'Abgang kann nicht vor Zugang liegen.'
             })
-
+        if self.entry <= self.hatching:
+            raise ValidationError({
+                'entry': 'Zugang kann nicht vor Schlupf liegen.'
+            })
 
 class Egg(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -64,6 +68,13 @@ class Egg(models.Model):
                               blank=True, null=True, on_delete=models.CASCADE)
     chicken = models.ForeignKey(Chicken,
                                 blank=True, null=True, on_delete=models.CASCADE)
+
+    DEFORMITY_CHOICES = (
+        ('W', 'Windei'),
+        ('Z', 'Zerstört'),
+    )
+    errors = models.CharField('Fehler', blank=True,
+                              max_length=1, choices=DEFORMITY_CHOICES)
 
     class Meta:
         ordering = ('-laid',)
