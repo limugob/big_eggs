@@ -5,8 +5,9 @@ from django.urls import reverse
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
+
 def today_midnight():
-    return timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    return timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)
 
 
 class ChickenGroup(models.Model):
@@ -28,8 +29,8 @@ class Chicken(models.Model):
     number = models.CharField('Ringnummer', max_length=60, blank=True, )
     name = models.CharField(max_length=60, blank=True)
     group = models.ForeignKey(ChickenGroup,
-        blank=True, null=True, on_delete=models.SET_NULL,
-        verbose_name='Gruppe')
+                              blank=True, null=True, on_delete=models.SET_NULL,
+                              verbose_name='Gruppe')
     entry = models.DateTimeField('Zugang', default=today_midnight)
     departure = models.DateTimeField('Abgang', blank=True, null=True)
 
@@ -39,7 +40,8 @@ class Chicken(models.Model):
         ('M', '♂'),
     ]
 
-    sex = models.CharField('Geschlecht', max_length=1, default='U', choices=SEX_CHOICES)
+    sex = models.CharField('Geschlecht', max_length=1,
+                           default='U', choices=SEX_CHOICES)
     note = models.TextField('Notizen', blank=True)
 
     def __str__(self):
@@ -54,13 +56,14 @@ class Chicken(models.Model):
                 'departure': 'Abgang kann nicht vor Zugang liegen.'
             })
 
+
 class Egg(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     laid = models.DateTimeField(default=today_midnight)
     group = models.ForeignKey(ChickenGroup,
-        blank=True, null=True, on_delete=models.CASCADE)
+                              blank=True, null=True, on_delete=models.CASCADE)
     chicken = models.ForeignKey(Chicken,
-        blank=True, null=True, on_delete=models.CASCADE)
+                                blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('-laid',)
