@@ -51,7 +51,10 @@ def eggs_list(request, minus_days=10):
                 datetime.datetime.combine(date, datetime.datetime.min.time()))
             for _ in range(form.cleaned_data['count']):
                 Egg.objects.create(
-                    laid=aware_date, group_id=form.cleaned_data['group'])
+                    laid=aware_date, 
+                    group_id=form.cleaned_data['group'],
+                    error=form.cleaned_data['error'],
+                    )
             count = form.cleaned_data['count']
             message_text = ngettext(
                 'Ein Eintrag gespeichert.',
@@ -118,6 +121,7 @@ class ChickenCreate(ChickenGeneric, CreateView):
 class ChickenUpdate(ChickenGeneric, UpdateView):
     def form_valid(self, form):
         self.object.entry = naive_date_to_current_datetime(form.cleaned_data['entry_date'])
+        self.object.hatching = naive_date_to_current_datetime(form.cleaned_data['hatching_date'])
         if form.cleaned_data['departure_date']:
             self.object.departure = naive_date_to_current_datetime(form.cleaned_data['departure_date'])
         return super().form_valid(form)
@@ -125,9 +129,10 @@ class ChickenUpdate(ChickenGeneric, UpdateView):
 
     def get_initial(self):
         out = super().get_initial()
-        out['entry_date'] = self.object.entry.astimezone(timezone.get_current_timezone()).date()
+        out['entry_date'] = timezone.localdate(self.object.entry)
+        out['hatching_date'] = timezone.localdate(self.object.hatching)
         if self.object.departure:
-            out['departure_date'] = self.object.departure.astimezone(timezone.get_current_timezone()).date()
+            out['departure_date'] = timezone.localdate(self.object.departure)
         return out
 
 

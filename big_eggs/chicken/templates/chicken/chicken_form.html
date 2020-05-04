@@ -1,5 +1,6 @@
 {% extends "big_eggs/main.html" %}
 {% load octicons %}
+{% load chicken_utils %}
 
 {% block content %}
 
@@ -16,6 +17,7 @@
     {% csrf_token %}
     <table class="table">
     {{ form }}
+    <tr><th>Alter:</th><td>{{ chicken.age|relativedelta_to_str }}</td>
     </table>
     <div>
         {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> {% endcomment %}

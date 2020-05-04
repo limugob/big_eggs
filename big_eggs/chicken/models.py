@@ -5,6 +5,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
+from dateutil.relativedelta import relativedelta
+
 
 def today_midnight():
     return timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)
@@ -52,29 +54,33 @@ class Chicken(models.Model):
         return reverse('chicken_update', kwargs={'pk': self.pk})
 
     def clean(self):
+        errors = {}
         if self.departure and self.departure < self.entry:
-            raise ValidationError({
-                'departure': 'Abgang kann nicht vor Zugang liegen.'
-            })
-        if self.entry <= self.hatching:
-            raise ValidationError({
-                'entry': 'Zugang kann nicht vor Schlupf liegen.'
-            })
+            errors['departure'] = 'Abgang kann nicht vor Zugang liegen.'
+        if self.entry < self.hatching:
+            errors['entry'] = 'Zugang kann nicht vor Schlupf liegen.'
+        if errors:
+            raise ValidationError(errors)
+
+    def age(self):
+        return relativedelta(timezone.now(), self.hatching)
+
 
 class Egg(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     laid = models.DateTimeField(default=today_midnight)
     group = models.ForeignKey(ChickenGroup,
-                              blank=True, null=True, on_delete=models.CASCADE)
+        blank=True, null=True, on_delete=models.CASCADE)
     chicken = models.ForeignKey(Chicken,
-                                blank=True, null=True, on_delete=models.CASCADE)
+        blank=True, null=True, on_delete=models.CASCADE)
 
-    DEFORMITY_CHOICES = (
+    ERROR_CHOICES = (
+        ('', '---'),
         ('W', 'Windei'),
         ('Z', 'Zerstört'),
     )
-    errors = models.CharField('Fehler', blank=True,
-                              max_length=1, choices=DEFORMITY_CHOICES)
+    error = models.CharField('Fehler', blank=True,
+        max_length=1, choices=ERROR_CHOICES)
 
     class Meta:
         ordering = ('-laid',)
@@ -82,4 +88,4 @@ class Egg(models.Model):
         verbose_name_plural = 'Eggs'
 
     def __str__(self):
-        return 'Ei vom {:%d.%m.%Y}'.format(self.laid)
+        return 'Ei vom {:%d.%m.%Y}'.format(timezone.localdate(self.laid))

@@ -1,7 +1,7 @@
 from django import forms
 from django.utils import timezone
 
-from .models import ChickenGroup, Chicken
+from .models import ChickenGroup, Chicken, Egg
 
 
 def get_chicken_group_choices():
@@ -32,9 +32,24 @@ class EggBulkForm(forms.Form):
         required=False,
         label='Gruppe',
     )
+    error = forms.ChoiceField(
+        initial='',
+        required=False,
+        label='Fehler',
+        choices=Egg.ERROR_CHOICES,
+    )
 
 
 class ChickenForm(forms.ModelForm):
+    hatching_date = forms.DateField(
+        initial=today_date,
+        widget=forms.TextInput(attrs={
+            'type': 'date',
+            'min': 1,
+            'step': 1,
+        }),
+        label='Schlupf',
+    )
     entry_date = forms.DateField(
         initial=today_date,
         widget=forms.TextInput(attrs={
@@ -60,15 +75,17 @@ class ChickenForm(forms.ModelForm):
             raise forms.ValidationError({
                 'departure_date': 'Abgang kann nicht vor Zugang liegen.'
             })
-
-
-
+        if cleaned_data['hatching_date'] > cleaned_data['entry_date']:
+            raise forms.ValidationError({
+                'entry_date': 'Zugang kann nicht vor Schlupf liegen.'
+            })
+        return cleaned_data
 
     class Meta:
         model = Chicken
         fields = [
             'number', 'name', 'group', 
-            'group', 'sex',
+            'group', 'sex', 'hatching_date',
             'entry_date', 'departure_date',
             'note']
 

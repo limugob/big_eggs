@@ -16,6 +16,7 @@ class Migration(migrations.Migration):
             model_name='chicken',
             name='hatching',
             field=models.DateTimeField(default=chicken.models.today_midnight, verbose_name='Schlupf'),
+            # default is wrong for migration, should be F(entry), we correct data by hand
         ),
         migrations.AddField(
             model_name='egg',

@@ -7,3 +7,4 @@ django-stronghold==0.4.0
 postgres==3.0.0
 pytz==2020.1
 whitenoise==5.0.1
+python-dateutil==2.8.1
