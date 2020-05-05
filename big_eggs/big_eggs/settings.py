@@ -21,6 +21,7 @@ env = environ.Env(
 environ.Env.read_env()
 
 SERVER_EMAIL = env('SERVER_EMAIL')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 ADMINS = [x.split(':') for x in env.list('ADMINS')]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
