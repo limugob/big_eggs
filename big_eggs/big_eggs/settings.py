@@ -174,4 +174,5 @@ STRONGHOLD_PUBLIC_NAMED_URLS = (
     'main', )
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_CONFIG = env.email_url('EMAIL_URL')
+vars().update(EMAIL_CONFIG)
