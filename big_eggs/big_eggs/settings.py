@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'big_eggs_auth.apps.BigEggsAuthConfig',
     'chicken.apps.ChickenConfig',
     'octicons',
+    'django_filters',
 ]
 
 if DEBUG:

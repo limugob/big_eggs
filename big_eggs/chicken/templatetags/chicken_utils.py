@@ -57,8 +57,7 @@ def relativedelta_to_str(value):
     return out
 
 
-error_choices_dict = dict(Egg.ERROR_CHOICES)
-
 @register.filter
 def error_to_str(value):
+    error_choices_dict = dict(Egg.Error.choices)
     return error_choices_dict[value]

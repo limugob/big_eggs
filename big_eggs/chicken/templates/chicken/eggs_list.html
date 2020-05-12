@@ -65,6 +65,13 @@ Durchschnittliche Anzahl Eier pro Tag: <b>{{ average|floatformat  }} </b> <br>
 </p>
 
 
+<h2>Filter: </h2>
+<form method="get">
+  {{ filter.form.as_p }}
+  <button type="submit" class="btn btn-secondary"> Anwenden </button>
+</form>
+<br>
+
 <!-- Modal -->
 <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
