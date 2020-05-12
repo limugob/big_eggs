@@ -27,10 +27,13 @@
             <ul class="list-group list-group-flush">
               {% for egg in day.eggs_list %}
                 <li class="list-group-item">
-                  <b>{{ egg.group__name|default:'Alle' }}:</b> {{ egg.eggs_count }} 
+                  <b>{{ egg.group__name|default:'ohne' }}:</b> {{ egg.eggs_count }} 
                   {% if egg.error %}
                     ({{ egg.error|error_to_str }})
                   {% endif %}
+                  <a class="btn btn-outline-danger btn-sm ml-5" href="/chicken/eggs_delete/{{ egg.laid__date|date:'Y'}}/{{ egg.laid__date|date:'m' }}/{{ egg.laid__date|date:'d'}}/{{ egg.group }}/{{ egg.error|default:"None" }}/" >
+                    {% octicon "x" scale=4 height=20 class="large" %}
+                  </a>
                 </li>
               {% endfor %}
             </ul>
@@ -41,7 +44,7 @@
           <button class="btn btn-outline-primary btn-sm" data-toggle="collapse" data-target="#details{{ forloop.counter }}" {% if not day.count %} disabled {% endif %}>
           {% octicon "italic" scale=4 height=20 class="large" %}
           </button>
-          <a class="btn btn-outline-danger btn-sm {% if not day.count %} disabled {% endif %}" href="/chicken/eggs_delete/{{ day.date|date:'Y'}}/{{ day.date|date:'m' }}/{{ day.date|date:'d'}}/{{day.group|default:''}}" >
+          <a class="btn btn-outline-danger btn-sm {% if not day.count %} disabled {% endif %}" href="/chicken/eggs_delete/{{ day.date|date:'Y'}}/{{ day.date|date:'m' }}/{{ day.date|date:'d'}}/" >
             {% octicon "x" scale=4 height=20 class="large" %}
           </a>
         </td>
@@ -56,7 +59,7 @@
 
 <p>
 <br><br>
-Anzahl Eier in den letzten {{ minus_days }} Tagen: <b>{{ sum_all }}</b> <br>
+<b>Summe</b> im gewählen Zeitraum ({{ minus_days }} Tage): <b>{{ sum_all }}</b> <br>
 Durchschnittliche Anzahl Eier pro Tag: <b>{{ average|floatformat  }} </b> <br>
 {% comment %} Trend: <b> {{ trend }} </b> <br> {% endcomment %}
 </p>

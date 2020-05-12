@@ -84,10 +84,17 @@ def eggs_list(request, minus_days=10):
     )
 
 
-def eggs_delete(request, year, month, day, group=None):
+def eggs_delete(request, year, month, day, group=None, error=None):
     date = datetime.date(year=year, month=month, day=day)
-    eggs = Egg.objects.filter(
-        laid__year=year, laid__month=month, laid__day=day, group=group)
+    eggs = Egg.objects.filter(laid__year=year, laid__month=month, laid__day=day)
+    if group:
+        if group == 'None':
+            group = None
+        eggs = eggs.filter(group_id=group)
+    if error:
+        if error == 'None':
+            error = ''
+        eggs = eggs.filter(error=error)
     if not eggs:
         messages.warning(request, "Keine Daten zum Löschen vorhanden.")
         return HttpResponseRedirect(reverse('eggs_list'))
