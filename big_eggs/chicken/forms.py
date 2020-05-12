@@ -36,7 +36,7 @@ class EggBulkForm(forms.Form):
         initial='',
         required=False,
         label='Fehler',
-        choices=Egg.ERROR_CHOICES,
+        choices=Egg.Error.choices,
     )
 
 

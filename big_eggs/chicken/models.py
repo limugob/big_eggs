@@ -72,13 +72,14 @@ class Egg(models.Model):
     chicken = models.ForeignKey(Chicken,
         blank=True, null=True, on_delete=models.CASCADE)
 
-    ERROR_CHOICES = (
-        ('', '---'),
-        ('W', 'Windei'),
-        ('Z', 'Zerstört'),
-    )
-    error = models.CharField('Fehler', blank=True,
-        max_length=1, choices=ERROR_CHOICES)
+    class Error(models.TextChoices):
+        NONE = ('N', 'keine')
+        WIND_EGG = ('W', 'Windei')
+        BROKEN = ('Z', 'Zerstört')
+
+    error = models.CharField('Fehler', 
+        default='N',
+        max_length=1, choices=Error.choices)
 
     class Meta:
         ordering = ('-laid',)
