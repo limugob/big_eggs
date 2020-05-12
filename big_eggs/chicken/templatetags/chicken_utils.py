@@ -1,6 +1,8 @@
 from django import template
 from django.utils.translation import ngettext
 
+from ..models import Egg
+
 register = template.Library()
 
 @register.filter
@@ -53,3 +55,10 @@ def relativedelta_to_str(value):
         )
     out = ', '.join(out)
     return out
+
+
+error_choices_dict = dict(Egg.ERROR_CHOICES)
+
+@register.filter
+def error_to_str(value):
+    return error_choices_dict[value]

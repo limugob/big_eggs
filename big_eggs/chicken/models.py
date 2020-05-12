@@ -7,9 +7,7 @@ from django.core.exceptions import ValidationError
 
 from dateutil.relativedelta import relativedelta
 
-
-def today_midnight():
-    return timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)
+from .utils import today_midnight
 
 
 class ChickenGroup(models.Model):

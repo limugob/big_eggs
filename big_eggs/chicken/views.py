@@ -13,7 +13,8 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from .forms import EggBulkForm, ChickenForm
 from .models import Chicken, ChickenGroup, Egg
-from collections import defaultdict
+from collections import defaultdict, namedtuple
+from .utils import today_midnight
 
 def naive_date_to_current_datetime(date):
     """
@@ -25,21 +26,28 @@ def naive_date_to_current_datetime(date):
 
 
 def eggs_list(request, minus_days=10):
-    last_ten_days = timezone.now() - datetime.timedelta(days=minus_days)
-    entries = Egg.objects.filter(laid__gt=last_ten_days).order_by(
-        '-laid',).values('laid__date', 'group__name', 'group').annotate(eggs_by_date=Count('id'))
-    with_group = False
-    for egg in entries:
-        if egg['group__name']:
-            with_group = True
-            break
-    
+    last_ten_days = today_midnight() - datetime.timedelta(days=minus_days)
+    entries = Egg.objects.filter(laid__gt=last_ten_days)
+    entries = entries.order_by('-laid')
+    entries = entries.values('laid__date', 'group__name', 'group', 'error')
+    entries = entries.annotate(eggs_count=Count('id'))
+
+    eggs_per_day = defaultdict(list)
     sum_per_day = defaultdict(int)
-    sum_all = 0
-    for egg in entries:
-        sum_per_day[egg['laid__date']] += egg['eggs_by_date']
-        sum_all += egg['eggs_by_date']
-    average = sum_all / minus_days
+    for entry in entries:
+        eggs_per_day[entry['laid__date']].append(entry)
+        sum_per_day[entry['laid__date']] += entry['eggs_count']
+
+    out = []
+    current_dt = last_ten_days
+    Entry = namedtuple('Entry', ['date', 'count', 'eggs_list'])
+    while current_dt <= today_midnight():
+        current_date = timezone.localdate(current_dt)
+        out.append(Entry(current_dt, sum_per_day[current_date], eggs_per_day[current_date]))
+        current_dt += datetime.timedelta(days=1)
+
+    sum_all = sum(sum_per_day.values())
+    average =  sum_all/ minus_days
 
     if request.method == 'GET':
         form = EggBulkForm()
@@ -65,13 +73,11 @@ def eggs_list(request, minus_days=10):
             return HttpResponseRedirect(reverse('eggs_list'))
 
     return render(request, 'chicken/eggs_list.html', {
-        'with_group': with_group,
-        'grouped_by_day': entries,
+        'eggs_by_day': reversed(out),
         'active': 'eggs_list',
         'form': form,
         'form_action': reverse('eggs_list'),
         'average': average,
-        'sum_per_day': sum_per_day,
         'sum_all': sum_all,
         'minus_days': minus_days,
     }
@@ -82,6 +88,9 @@ def eggs_delete(request, year, month, day, group=None):
     date = datetime.date(year=year, month=month, day=day)
     eggs = Egg.objects.filter(
         laid__year=year, laid__month=month, laid__day=day, group=group)
+    if not eggs:
+        messages.warning(request, "Keine Daten zum Löschen vorhanden.")
+        return HttpResponseRedirect(reverse('eggs_list'))
     if request.method == 'GET':
         return render(request, 'chicken/eggs_delete.html', {'eggs': eggs})
     elif request.method == 'POST':
