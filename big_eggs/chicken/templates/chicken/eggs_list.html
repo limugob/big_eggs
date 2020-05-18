@@ -27,7 +27,7 @@
             <ul class="list-group list-group-flush">
               {% for egg in day.eggs_list %}
                 <li class="list-group-item">
-                  <b>{{ egg.group__name|default:'ohne' }}:</b> {{ egg.eggs_count }} 
+                  <b>{{ egg.group__name|default:'ohne' }}:</b> {{ egg.eggs_count }}
                   {% if egg.error %}
                     ({{ egg.error|error_to_str }})
                   {% endif %}
@@ -38,7 +38,7 @@
               {% endfor %}
             </ul>
           </div>
-        </td> 
+        </td>
         <td>{{ day.count }}</td>
         <td>
           <button class="btn btn-outline-primary btn-sm" data-toggle="collapse" data-target="#details{{ forloop.counter }}" {% if not day.count %} disabled {% endif %}>
@@ -48,7 +48,7 @@
             {% octicon "x" scale=4 height=20 class="large" %}
           </a>
         </td>
-      </tr>      
+      </tr>
     {% endfor %}
   </tbody>
 </table>

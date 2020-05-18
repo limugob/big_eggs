@@ -20,10 +20,10 @@
   <tbody>
     {% for group in chickengroup_list %}
       <tr>
-        <td>{{ group }}</td>  
+        <td>{{ group }}</td>
         <td>
           <a class="btn btn-outline-primary btn-sm" href="{% url 'chickengroup_update' group.id %}" >
-            {% octicon "pencil" %} 
+            {% octicon "pencil" %}
           </a>
         </td>
 
@@ -33,7 +33,7 @@
 </table>
 
 <a class="btn btn-primary" href="{% url 'chickengroup_add'%}" >
-{% octicon "plus" scale=4 height=24 class="large" %} 
+{% octicon "plus" scale=4 height=24 class="large" %}
 <span style='padding-left: 0.7em'>Eingabe</span></a>
 
 {% endblock content %}

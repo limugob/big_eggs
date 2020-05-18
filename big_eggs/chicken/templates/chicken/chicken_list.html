@@ -18,13 +18,13 @@
   <tbody>
     {% for chicken in chicken_list %}
       <tr>
-        <td>{{ forloop.counter }}</td>  
-        <td>{{ chicken.group.name }}</td>  
-        <td>{{ chicken }}</td>          
+        <td>{{ forloop.counter }}</td>
+        <td>{{ chicken.group.name }}</td>
+        <td>{{ chicken }}</td>
         <td>{{ chicken.get_sex_display }}</td>
         <td>
           <a class="btn btn-outline-primary btn-sm" href="{% url 'chicken_update' chicken.id %}" >
-            {% octicon "pencil" %} 
+            {% octicon "pencil" %}
           </a>
         </td>
 
@@ -35,7 +35,7 @@
 
 
 <a class="btn btn-primary" href="{% url 'chicken_add'%}" >
-{% octicon "plus" scale=4 height=24 class="large" %} 
+{% octicon "plus" scale=4 height=24 class="large" %}
 <span style='padding-left: 0.7em'>Eingabe</span></a>
 
 {% endblock content %}

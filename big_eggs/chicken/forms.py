@@ -1,7 +1,7 @@
 from django import forms
 from django.utils import timezone
 
-from .models import ChickenGroup, Chicken, Egg
+from .models import Chicken, ChickenGroup, Egg
 
 
 def get_chicken_group_choices():

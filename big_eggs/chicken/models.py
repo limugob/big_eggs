@@ -1,11 +1,10 @@
 import uuid
 
+from dateutil.relativedelta import relativedelta
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from django.core.exceptions import ValidationError
-
-from dateutil.relativedelta import relativedelta
 
 from .utils import today_midnight
 

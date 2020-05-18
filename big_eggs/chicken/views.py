@@ -1,4 +1,5 @@
 import datetime
+from collections import defaultdict, namedtuple
 
 from django.contrib import messages
 from django.core.exceptions import SuspiciousOperation
@@ -11,16 +12,15 @@ from django.utils.translation import ngettext
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from .forms import EggBulkForm, ChickenForm
-from .models import Chicken, ChickenGroup, Egg
-from collections import defaultdict, namedtuple
-from .utils import today_midnight
 from .filters import EggFilter
+from .forms import ChickenForm, EggBulkForm
+from .models import Chicken, ChickenGroup, Egg
+from .utils import today_midnight
 
 
 def naive_date_to_current_datetime(date):
     """
-    Convert given naive date as in current timezone and return 
+    Convert given naive date as in current timezone and return
     as datetime (midnight).
     """
     return timezone.get_current_timezone().localize(

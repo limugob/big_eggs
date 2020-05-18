@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from django.urls import reverse_lazy
 
 import environ
+from django.urls import reverse_lazy
 
 env = environ.Env(
     # set casting, default value

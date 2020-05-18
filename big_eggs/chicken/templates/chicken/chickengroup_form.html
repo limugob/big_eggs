@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<h1>Hühnergruppe   
+<h1>Hühnergruppe
     {% if not chickengroup.id %}
         hinzufügen
     {% else %}
@@ -17,7 +17,7 @@
     <table class="table">
     {{ form }}
     </table>
-    
+
     {% if chickengroup.id %}
     <p>Zugeordnete Hühner: {{ chickengroup.get_members.count }}</p>
     {% endif %}
