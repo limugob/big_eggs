@@ -2,20 +2,21 @@
 
 from django.db import migrations
 
+
 def none_to_N(apps, schema_editor):
     """
     Egg.error must be a string with length 1.
     """
-    Egg = apps.get_model('chicken', 'Egg')
-    updates = Egg.objects.filter(error='').update(error='N')
+    Egg = apps.get_model("chicken", "Egg")
+    updates = Egg.objects.filter(error="").update(error="N")
     print()
-    print('Eggs updated: {}'.format(updates))
+    print("Eggs updated: {}".format(updates))
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('chicken', '0005_auto_20200504_1631'),
+        ("chicken", "0005_auto_20200504_1631"),
     ]
 
     operations = [

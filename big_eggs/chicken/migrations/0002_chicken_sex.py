@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('chicken', '0001_initial'),
+        ("chicken", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='chicken',
-            name='sex',
-            field=models.CharField(choices=[('U', '---'), ('W', 'Hen'), ('M', 'Cock')], default='U', max_length=1),
+            model_name="chicken",
+            name="sex",
+            field=models.CharField(
+                choices=[("U", "---"), ("W", "Hen"), ("M", "Cock")],
+                default="U",
+                max_length=1,
+            ),
         ),
     ]

@@ -19,14 +19,13 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
-    path('chicken/', include('chicken.urls')),
-    path('', views.main, name="main"),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("allauth.urls")),
+    path("chicken/", include("chicken.urls")),
+    path("", views.main, name="main"),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
+
+    urlpatterns = [path("__debug__/", include(debug_toolbar.urls)),] + urlpatterns

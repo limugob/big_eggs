@@ -7,18 +7,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('chicken', '0002_chicken_sex'),
+        ("chicken", "0002_chicken_sex"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='chicken',
-            name='entry',
+            model_name="chicken",
+            name="entry",
             field=models.DateTimeField(default=chicken.models.today_midnight),
         ),
         migrations.AlterField(
-            model_name='chicken',
-            name='sex',
-            field=models.CharField(choices=[('U', '---'), ('W', '♀'), ('M', '♂')], default='U', max_length=1),
+            model_name="chicken",
+            name="sex",
+            field=models.CharField(
+                choices=[("U", "---"), ("W", "♀"), ("M", "♂")],
+                default="U",
+                max_length=1,
+            ),
         ),
     ]

@@ -5,19 +5,20 @@ from ..models import Egg
 
 register = template.Library()
 
+
 @register.filter
 def to_class_name(value):
     return value.__class__.__name__
 
 
-
 messages_level = {
-    10: 'secondary',
-    20: 'primary',
-    25: 'success',
-    30: 'warning',
-    40: 'danger',
+    10: "secondary",
+    20: "primary",
+    25: "success",
+    30: "warning",
+    40: "danger",
 }
+
 
 @register.filter
 def to_bs_level(value):
@@ -32,28 +33,17 @@ def to_bs_level(value):
     """
     return messages_level[value]
 
+
 @register.filter
 def relativedelta_to_str(value):
     out = []
     if value.years:
-        out.append(ngettext(
-            'ein Jahr',
-            f'{value.years} Jahre',
-            value.years)
-        )
+        out.append(ngettext("ein Jahr", f"{value.years} Jahre", value.years))
     if value.months:
-        out.append(ngettext(
-            'ein Monat',
-            f'{value.months} Monate',
-            value.months)
-        )
+        out.append(ngettext("ein Monat", f"{value.months} Monate", value.months))
     if value.days:
-        out.append(ngettext(
-            'ein Tag',
-            f'{value.days} Tage',
-            value.days)
-        )
-    out = ', '.join(out)
+        out.append(ngettext("ein Tag", f"{value.days} Tage", value.days))
+    out = ", ".join(out)
     return out
 
 
