@@ -6,11 +6,12 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 
+from tenants.models import TenantDataModel
+
 from .utils import today_midnight
 
 
-class ChickenGroup(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class ChickenGroup(TenantDataModel):
     name = models.CharField(max_length=60, blank=True)
 
     def __str__(self):
@@ -23,8 +24,7 @@ class ChickenGroup(models.Model):
         return self.chicken_set.all()
 
 
-class Chicken(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class Chicken(TenantDataModel):
     number = models.CharField("Ringnummer", max_length=60, blank=True,)
     name = models.CharField(max_length=60, blank=True)
     group = models.ForeignKey(
@@ -66,8 +66,7 @@ class Chicken(models.Model):
         return relativedelta(timezone.now(), self.hatching)
 
 
-class Egg(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class Egg(TenantDataModel):
     laid = models.DateTimeField(default=today_midnight)
     group = models.ForeignKey(
         ChickenGroup, blank=True, null=True, on_delete=models.CASCADE

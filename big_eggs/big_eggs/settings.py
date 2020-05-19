@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "chicken.apps.ChickenConfig",
     "octicons",
     "django_filters",
+    "tenants",
 ]
 
 if DEBUG:
