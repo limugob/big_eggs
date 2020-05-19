@@ -75,6 +75,7 @@ MIDDLEWARE = [
     "stronghold.middleware.LoginRequiredMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "tenants.middleware.SetTenantMiddleware",
 ]
 
 if DEBUG:

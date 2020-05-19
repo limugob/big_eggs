@@ -1,5 +1,6 @@
 from django import forms
 from django.utils import timezone
+from django_scopes.forms import SafeModelChoiceField
 
 from .models import Chicken, ChickenGroup, Egg
 
@@ -67,10 +68,12 @@ class ChickenForm(forms.ModelForm):
             "number",
             "name",
             "group",
-            "group",
             "sex",
             "hatching_date",
             "entry_date",
             "departure_date",
             "note",
         ]
+        field_classes = {
+            "group": SafeModelChoiceField,
+        }

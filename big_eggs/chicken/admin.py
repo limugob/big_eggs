@@ -1,11 +1,13 @@
 from django.contrib import admin
 
+from tenants.admin import DisabledScopesMixin
+
 from .models import Chicken, ChickenGroup, Egg
 from .templatetags.chicken_utils import relativedelta_to_str
 
 
 @admin.register(Chicken)
-class ChickenAdmin(admin.ModelAdmin):
+class ChickenAdmin(DisabledScopesMixin, admin.ModelAdmin):
     list_display = (
         "__str__",
         "group",
@@ -30,5 +32,9 @@ class ChickenAdmin(admin.ModelAdmin):
         return relativedelta_to_str(object.age())
 
 
-admin.site.register(ChickenGroup)
-admin.site.register(Egg)
+class CommonAdmin(DisabledScopesMixin, admin.ModelAdmin):
+    pass
+
+
+admin.site.register(ChickenGroup, CommonAdmin)
+admin.site.register(Egg, CommonAdmin)
