@@ -13,10 +13,9 @@ class User(AbstractUser):
         return self.email
 
     def save(self, *args, **kwargs):
-        new_user = hasattr(self, "id")
         super().save(*args, **kwargs)
 
-        if new_user:
+        if self.tenant_set.count() == 0:
             t = Tenant()
             t.save()
             t.users.add(self)
