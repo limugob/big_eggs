@@ -1,3 +1,4 @@
+from dateutil import relativedelta
 from django import template
 from django.utils.translation import ngettext
 
@@ -37,6 +38,8 @@ def to_bs_level(value):
 @register.filter
 def relativedelta_to_str(value):
     out = []
+    if not isinstance(value, relativedelta.relativedelta):
+        return ""
     if value.years:
         out.append(ngettext("ein Jahr", f"{value.years} Jahre", value.years))
     if value.months:
