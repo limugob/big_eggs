@@ -2,4 +2,7 @@ from django.contrib import admin
 
 from .models import Tenant
 
-admin.site.register(Tenant)
+
+@admin.register(Tenant)
+class TenantAdmin(admin.ModelAdmin):
+    filter_horizontal = ("users",)
