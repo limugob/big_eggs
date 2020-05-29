@@ -19,3 +19,11 @@ class User(AbstractUser):
             t = Tenant()
             t.save()
             t.users.add(self)
+
+    @property
+    def tenant(self):
+        return self.tenant_set.first()
+
+    @property
+    def tenant_id(self):
+        return self.tenant_set.first().id
