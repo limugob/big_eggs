@@ -35,7 +35,7 @@ class QuestionIndexViewTests(TestCase):
 
     def test_eggs_list_with_egg_entries(self):
         """
-        Make some entries and schow them.
+        Make some entries and show them.
         """
         self.client.force_login(self.user)
         with scope(tenant=self.user.tenant_id):
