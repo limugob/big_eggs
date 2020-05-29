@@ -173,3 +173,9 @@ STRONGHOLD_PUBLIC_NAMED_URLS = ("main",)
 
 EMAIL_CONFIG = env.email_url("EMAIL_URL")
 vars().update(EMAIL_CONFIG)
+
+# fmt: off
+from django.test import utils   # isort:skip
+from django_scopes import scopes_disabled   # isort:skip
+utils.setup_databases = scopes_disabled()(utils.setup_databases)    # isort:skip
+# fmt: on

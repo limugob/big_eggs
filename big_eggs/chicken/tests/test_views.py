@@ -4,8 +4,10 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils import timezone
+from django_scopes import scope
 
 from ..models import Egg
+from ..utils import today_midnight
 
 User = get_user_model()
 
@@ -36,18 +38,19 @@ class QuestionIndexViewTests(TestCase):
         Make some entries and schow them.
         """
         self.client.force_login(self.user)
-        Egg.objects.create()
-        Egg.objects.create()
-        Egg.objects.create()
+        with scope(tenant=self.user.tenant_id):
+            Egg.objects.create()
+            Egg.objects.create()
+            Egg.objects.create()
 
-        Egg.objects.create(laid=timezone.now() - datetime.timedelta(days=10))
+            Egg.objects.create(laid=today_midnight() - datetime.timedelta(days=10))
 
-        response = self.client.get(reverse("eggs_list"))
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(3, response.context["sum_all"])
-        self.assertEqual(10, response.context["minus_days"])
-        self.assertEqual(0.3, response.context["average"])
+            response = self.client.get(reverse("eggs_list"))
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(3, response.context["sum_all"])
+            self.assertEqual(10, response.context["minus_days"])
+            self.assertEqual(0.3, response.context["average"])
 
-        response = self.client.get(reverse("eggs_list", kwargs={"minus_days": 20}))
-        self.assertEqual(4, response.context["sum_all"])
-        self.assertEqual(20, response.context["minus_days"])
+            response = self.client.get(reverse("eggs_list", kwargs={"minus_days": 20}))
+            self.assertEqual(4, response.context["sum_all"])
+            self.assertEqual(20, response.context["minus_days"])

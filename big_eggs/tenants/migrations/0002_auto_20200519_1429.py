@@ -9,7 +9,9 @@ def create_first_tenant(apps, schema_editor):
     t.save()
 
     User = apps.get_model("big_eggs_auth", "User")
-    t.users.add(User.objects.first())
+    first_user = User.objects.first()
+    if first_user:
+        t.users.add(User.objects.first())
 
 
 class Migration(migrations.Migration):
