@@ -142,3 +142,4 @@ big_eggs/static
 .vscode
 .env
 *.code-workspace
+static/
