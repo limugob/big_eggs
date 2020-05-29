@@ -107,6 +107,7 @@ WSGI_APPLICATION = "big_eggs.wsgi.application"
 DATABASES = {
     "default": env.db(),
 }
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 
 # Password validation
