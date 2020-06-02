@@ -28,5 +28,6 @@ class TenantDataModel(UUIDModel):
             super().validate_unique(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        self.tenant_id = get_scope()["tenant"]
+        if not self.tenant_id:
+            self.tenant_id = get_scope()["tenant"]
         super().save(*args, **kwargs)
