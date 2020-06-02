@@ -47,6 +47,10 @@ class ChickenForm(forms.ModelForm):
         required=False,
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["group"].queryset = ChickenGroup.objects.all()
+
     def clean(self):
         cleaned_data = super().clean()
         if (
