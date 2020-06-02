@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "octicons",
     "django_filters",
     "tenants",
+    "core",
 ]
 
 if DEBUG:
