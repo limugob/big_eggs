@@ -18,6 +18,7 @@ class ChickenAdmin(DisabledScopesMixin, admin.ModelAdmin):
             None,
             {
                 "fields": (
+                    ("tenant"),
                     ("number", "name"),
                     ("sex", "group"),
                     ("hatching", "age_display"),
