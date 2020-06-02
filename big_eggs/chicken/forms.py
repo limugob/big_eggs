@@ -52,19 +52,18 @@ class ChickenForm(forms.ModelForm):
         self.fields["group"].queryset = ChickenGroup.objects.all()
 
     def clean(self):
-        cleaned_data = super().clean()
         if (
-            cleaned_data["departure_date"]
-            and cleaned_data["entry_date"] > cleaned_data["departure_date"]
+            self.cleaned_data["departure_date"]
+            and self.cleaned_data["entry_date"] > self.cleaned_data["departure_date"]
         ):
             raise forms.ValidationError(
                 {"departure_date": "Abgang kann nicht vor Zugang liegen."}
             )
-        if cleaned_data["hatching_date"] > cleaned_data["entry_date"]:
+        if self.cleaned_data["hatching_date"] > self.cleaned_data["entry_date"]:
             raise forms.ValidationError(
-                {"entry_date": "Zugang kann nicht vor Schlupf liegen."}
+                {"entry_date": "Zugang kannnnnn nicht vor Schlupf liegen."}
             )
-        return cleaned_data
+        return super().clean()
 
     class Meta:
         model = Chicken
