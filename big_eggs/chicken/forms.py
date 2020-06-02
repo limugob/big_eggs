@@ -61,7 +61,7 @@ class ChickenForm(forms.ModelForm):
             )
         if self.cleaned_data["hatching_date"] > self.cleaned_data["entry_date"]:
             raise forms.ValidationError(
-                {"entry_date": "Zugang kannnnnn nicht vor Schlupf liegen."}
+                {"entry_date": "Zugang kann nicht vor Schlupf liegen."}
             )
         return super().clean()
 
