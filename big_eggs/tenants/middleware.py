@@ -1,4 +1,4 @@
-from django_scopes import scope
+from django_scopes import scope, scopes_disabled
 
 
 class SetTenantMiddleware:
@@ -8,9 +8,13 @@ class SetTenantMiddleware:
     def __call__(self, request):
 
         if request.user.is_authenticated:
-            tenant = request.user.tenant_set.first()
-            with scope(tenant=tenant.id):
-                response = self.get_response(request)
+            if request.path.startswith("/admin"):
+                # no scoping in admin
+                with scopes_disabled():
+                    response = self.get_response(request)
+            else:
+                with scope(tenant=request.user.tenant_id):
+                    response = self.get_response(request)
 
         else:
             # logger.warning('no tenant')
