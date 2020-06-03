@@ -1,3 +1,5 @@
+### based on https://github.com/pretalx/pretalx/blob/master/src/pretalx/common/management/commands/shell_scoped.py
+
 from contextlib import suppress
 
 from django.apps import apps
