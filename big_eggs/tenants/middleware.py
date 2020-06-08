@@ -8,7 +8,7 @@ class SetTenantMiddleware:
     def __call__(self, request):
 
         if request.user.is_authenticated:
-            if request.path.startswith("/admin"):
+            if request.path.startswith("/admin/"):
                 # no scoping in admin
                 with scopes_disabled():
                     response = self.get_response(request)
