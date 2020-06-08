@@ -85,6 +85,27 @@ class EggsListTests(TestCase):
             user_info = [m.message for m in get_messages(response.wsgi_request)]
             self.assertIn("2 Einträge gelöscht.", user_info)
 
+    def test_eggs_delete_get(self):
+        date = datetime.datetime(
+            year=2020, month=1, day=1, tzinfo=timezone.get_current_timezone()
+        )
+        self.client.force_login(self.user)
+        with scope(tenant=self.user.tenant_id):
+            egg = Egg.objects.create(laid=date)
+
+            self.assertEqual(Egg.objects.count(), 1)
+
+            post = {
+                "year": date.year,
+                "month": date.month,
+                "day": date.day,
+                "group": "None",
+                "error": "N",
+            }
+            url = reverse("eggs_delete", kwargs=post)
+            response = self.client.get(url, post)
+            self.assertIn(egg, response.context["eggs"])
+
     def test_eggs_delete_no_data(self):
         date = datetime.datetime(
             year=2020, month=1, day=1, tzinfo=timezone.get_current_timezone()
