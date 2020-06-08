@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib.auth import get_user_model
+from django.contrib.messages import get_messages
 from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -12,7 +13,7 @@ from ..utils import today_midnight
 User = get_user_model()
 
 
-class QuestionIndexViewTests(TestCase):
+class EggsListTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user("hop", password="hop")
 
@@ -54,3 +55,56 @@ class QuestionIndexViewTests(TestCase):
             response = self.client.get(reverse("eggs_list", kwargs={"minus_days": 20}))
             self.assertEqual(4, response.context["sum_all"])
             self.assertEqual(20, response.context["minus_days"])
+
+    def test_eggs_delete(self):
+        date = datetime.datetime(
+            year=2020, month=1, day=1, tzinfo=timezone.get_current_timezone()
+        )
+        self.client.force_login(self.user)
+        with scope(tenant=self.user.tenant_id):
+            Egg.objects.create(laid=date)
+            Egg.objects.create(laid=date)
+
+            # one Egg has different date
+            Egg.objects.create(laid=date - datetime.timedelta(days=1))
+
+            self.assertEqual(Egg.objects.count(), 3)
+
+            post = {
+                "year": date.year,
+                "month": date.month,
+                "day": date.day,
+                "group": "None",
+                "error": "N",
+            }
+            url = reverse("eggs_delete", kwargs=post)
+            response = self.client.post(url, post)
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.url, reverse("eggs_list"))
+            self.assertEqual(Egg.objects.count(), 1)
+            user_info = [m.message for m in get_messages(response.wsgi_request)]
+            self.assertIn("2 Einträge gelöscht.", user_info)
+
+    def test_eggs_delete_no_data(self):
+        date = datetime.datetime(
+            year=2020, month=1, day=1, tzinfo=timezone.get_current_timezone()
+        )
+        self.client.force_login(self.user)
+        with scope(tenant=self.user.tenant_id):
+            Egg.objects.create(laid=date - datetime.timedelta(days=2))
+            self.assertEqual(Egg.objects.count(), 1)
+
+            post = {
+                "year": date.year,
+                "month": date.month,
+                "day": date.day,
+                "group": "None",
+                "error": "N",
+            }
+            url = reverse("eggs_delete", kwargs=post)
+            response = self.client.post(url, post)
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.url, reverse("eggs_list"))
+            self.assertEqual(Egg.objects.count(), 1)
+            user_info = [m.message for m in get_messages(response.wsgi_request)]
+            self.assertEqual(len(user_info), 1)
