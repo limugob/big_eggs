@@ -1,0 +1,16 @@
+{
+    "background_color": "#B12A34",
+    "theme_color": "#B12A34",
+    "description": "App for chicken farmer.",
+    "display": "fullscreen",
+    "icons": [
+      {
+        "src": "icon/icon192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ],
+    "name": "BigEggs",
+    "short_name": "BigEggs",
+    "start_url": "/index.html"
+  }

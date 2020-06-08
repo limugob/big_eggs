@@ -152,7 +152,7 @@ AUTH_USER_MODEL = "big_eggs_auth.User"
 INTERNAL_IPS = env.list("INTERNAL_IPS")
 
 STATICFILES_DIRS = [
-    BASE_DIR / "big_eggs/static",
+    BASE_DIR / "big_eggs/big_eggs/static",
 ]
 
 STATIC_ROOT = BASE_DIR / "static"
