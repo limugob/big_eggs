@@ -169,7 +169,7 @@ LOGIN_REDIRECT_URL = reverse_lazy("eggs_list")
 
 STRONGHOLD_PUBLIC_URLS = (r"/accounts*",)  # allauth
 
-STRONGHOLD_PUBLIC_NAMED_URLS = ("main",)
+STRONGHOLD_PUBLIC_NAMED_URLS = ("main", "impressum")
 
 
 EMAIL_CONFIG = env.email_url("EMAIL_URL")
