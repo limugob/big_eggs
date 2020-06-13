@@ -28,7 +28,7 @@
               {% for egg in day.eggs_list %}
                 <li class="list-group-item">
                   <b>{{ egg.group__name|default:'ohne' }}:</b> {{ egg.eggs_count }}
-                  {% if egg.error %}
+                  {% if egg.error != 'N' %}
                     ({{ egg.error|error_to_str }})
                   {% endif %}
                   <a class="btn btn-outline-danger btn-sm ml-5" href="/chicken/eggs_delete/{{ egg.laid__date|date:'Y'}}/{{ egg.laid__date|date:'m' }}/{{ egg.laid__date|date:'d'}}/{{ egg.group }}/{{ egg.error|default:"None" }}/" >
