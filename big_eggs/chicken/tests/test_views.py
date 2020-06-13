@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django_scopes import scope
 
-from ..models import Egg
+from ..models import ChickenGroup, Egg
 from ..utils import today_midnight
 
 User = get_user_model()
@@ -16,6 +16,8 @@ User = get_user_model()
 class EggsListTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user("hop", password="hop")
+        with scope(tenant=self.user.tenant_id):
+            self.group = ChickenGroup.objects.create(name="Group hop")
 
     def test_no_login(self):
         """
@@ -129,3 +131,22 @@ class EggsListTests(TestCase):
             self.assertEqual(Egg.objects.count(), 1)
             user_info = [m.message for m in get_messages(response.wsgi_request)]
             self.assertEqual(len(user_info), 1)
+
+    def test_eggs_insert_entry(self):
+        self.client.force_login(self.user)
+        with scope(tenant=self.user.tenant_id):
+            post = {
+                "date": "2020-01-01",
+                "count": 5,
+                "group": self.group.id,
+                "error": Egg.Error.NONE,
+            }
+            url = reverse("eggs_list")
+            response = self.client.post(url, post)
+
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.url, reverse("eggs_list"))
+            self.assertEqual(Egg.objects.count(), 5)
+
+            user_info = [m.message for m in get_messages(response.wsgi_request)]
+            # self.assertIn("2 Einträge gelöscht.", user_info)
