@@ -74,6 +74,7 @@ class Egg(TenantDataModel):
     chicken = models.ForeignKey(
         Chicken, blank=True, null=True, on_delete=models.CASCADE
     )
+    quantity = models.PositiveIntegerField(default=1)
 
     class Error(models.TextChoices):
         NONE = ("N", "keine")
@@ -84,6 +85,7 @@ class Egg(TenantDataModel):
 
     class Meta:
         ordering = ("-laid",)
+        unique_together = ("tenant_id", "laid", "group", "chicken", "error")
         verbose_name = "Egg"
         verbose_name_plural = "Eggs"
 

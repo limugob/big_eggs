@@ -34,7 +34,8 @@ class ChickenAdmin(DisabledScopesMixin, admin.ModelAdmin):
 
 
 class CommonAdmin(DisabledScopesMixin, admin.ModelAdmin):
-    pass
+
+    list_filter = ("tenant",)
 
 
 admin.site.register(ChickenGroup, CommonAdmin)

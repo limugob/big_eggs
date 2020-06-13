@@ -146,7 +146,25 @@ class EggsListTests(TestCase):
 
             self.assertEqual(response.status_code, 302)
             self.assertEqual(response.url, reverse("eggs_list"))
-            self.assertEqual(Egg.objects.count(), 5)
+
+            self.assertEqual(Egg.objects.count(), 1)
+            self.assertEqual(Egg.objects.first().quantity, 5)
 
             user_info = [m.message for m in get_messages(response.wsgi_request)]
             # self.assertIn("2 Einträge gelöscht.", user_info)
+
+    def test_eggs_insert_entry_double(self):
+        self.client.force_login(self.user)
+        with scope(tenant=self.user.tenant_id):
+            post = {
+                "date": "2020-01-01",
+                "count": 5,
+                "group": self.group.id,
+                "error": Egg.Error.NONE,
+            }
+            url = reverse("eggs_list")
+            response = self.client.post(url, post)
+            response_second = self.client.post(url, post)
+
+            self.assertEqual(Egg.objects.count(), 1)
+            self.assertEqual(Egg.objects.first().quantity, 10)

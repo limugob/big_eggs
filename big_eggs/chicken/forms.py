@@ -26,7 +26,10 @@ class EggBulkForm(forms.Form):
         initial=None, choices=get_chicken_group_choices, required=False, label="Gruppe",
     )
     error = forms.ChoiceField(
-        initial="", required=False, label="Fehler", choices=Egg.Error.choices,
+        initial=Egg.Error.NONE,
+        required=False,
+        label="Fehler",
+        choices=Egg.Error.choices,
     )
 
 

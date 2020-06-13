@@ -3,7 +3,7 @@ from collections import defaultdict, namedtuple
 
 from django.contrib import messages
 from django.core.exceptions import SuspiciousOperation
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
@@ -34,7 +34,7 @@ def eggs_list(request, minus_days=10):
     egg_filter = EggFilter(request.GET, queryset=eggs)
     entries = egg_filter.qs.order_by("-laid")
     entries = entries.values("laid__date", "group__name", "group", "error")
-    entries = entries.annotate(eggs_count=Count("id"))
+    entries = entries.annotate(eggs_count=Sum("quantity"))
 
     eggs_per_day = defaultdict(list)
     sum_per_day = defaultdict(int)
@@ -64,13 +64,17 @@ def eggs_list(request, minus_days=10):
             aware_date = timezone.make_aware(
                 datetime.datetime.combine(date, datetime.datetime.min.time())
             )
-            for _ in range(form.cleaned_data["count"]):
-                Egg.objects.create(
-                    laid=aware_date,
-                    group_id=form.cleaned_data["group"],
-                    error=form.cleaned_data["error"],
-                )
             count = form.cleaned_data["count"]
+            entry, created = Egg.objects.get_or_create(
+                laid=aware_date,
+                group_id=form.cleaned_data["group"] or None,
+                error=form.cleaned_data["error"],
+            )
+            if created:
+                entry.quantity = count
+            else:
+                entry.quantity += count
+            entry.save()
             message_text = ngettext(
                 "Ein Eintrag gespeichert.", "%(count)d Einträge gespeichert.", count
             ) % {"count": count,}
@@ -109,7 +113,7 @@ def eggs_delete(request, year, month, day, group=None, error=None):
     elif request.method == "POST":
         count, _ = eggs.delete()
         message_text = ngettext(
-            "Ein Eintrag gelöscht.", "%(count)d Einträge gelöscht.", count
+            "Eintrag gelöscht.", "%(count)d Einträge gelöscht.", count
         ) % {"count": count,}
         messages.success(request, message_text)
         return HttpResponseRedirect(reverse("eggs_list"))
