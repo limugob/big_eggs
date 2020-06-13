@@ -2,7 +2,7 @@
     "background_color": "#B12A34",
     "theme_color": "#B12A34",
     "description": "App for chicken farmer.",
-    "display": "fullscreen",
+    "display": "standalone",
     "icons": [
       {
         "src": "icon/icon192.png",
