@@ -8,6 +8,4 @@ def main(request):
 
 
 def impressum(request):
-    if request.user.is_authenticated:
-        return redirect("eggs_list")
     return render(request, "big_eggs/impressum.html")
