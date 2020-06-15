@@ -13,6 +13,9 @@ from .utils import today_midnight
 
 class ChickenGroup(TenantDataModel):
     name = models.CharField(max_length=60, blank=True)
+    selectable = models.BooleanField(
+        default=True, help_text="Group selectable in egg input form?"
+    )
 
     def __str__(self):
         return self.name

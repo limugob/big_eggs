@@ -7,7 +7,9 @@ from .models import Chicken, ChickenGroup, Egg
 
 def get_chicken_group_choices():
     return [(None, "---")] + list(
-        ChickenGroup.objects.values_list("id", "name").order_by("name")
+        ChickenGroup.objects.filter(selectable=True)
+        .values_list("id", "name")
+        .order_by("name")
     )
 
 
