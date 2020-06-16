@@ -1,4 +1,6 @@
+from django.contrib import messages
 from django.shortcuts import redirect, render
+from envelope.views import ContactView
 
 
 def main(request):
@@ -13,3 +15,12 @@ def impressum(request):
 
 def datenschutz(request):
     return render(request, "big_eggs/datenschutz.html")
+
+
+class BEContactView(ContactView):
+    template_name = "big_eggs/contact.html"
+    success_url = "/"
+
+    def form_valid(self, form):
+        messages.success(self.request, "Vielen Dank für Ihren Nachricht.")
+        return super().form_valid(form)

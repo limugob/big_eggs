@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "django_filters",
     "tenants",
     "core",
+    "envelope",
 ]
 
 if DEBUG:
@@ -168,8 +169,11 @@ ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 10
 LOGIN_REDIRECT_URL = reverse_lazy("eggs_list")
 
 STRONGHOLD_PUBLIC_URLS = (r"/accounts*",)  # allauth
+STRONGHOLD_PUBLIC_URLS += (r"/contact*",)  # envelope
 
 STRONGHOLD_PUBLIC_NAMED_URLS = ("main", "impressum", "datenschutz")
+
+ENVELOPE_USE_HTML_EMAIL = False
 
 
 EMAIL_CONFIG = env.email_url("EMAIL_URL")
