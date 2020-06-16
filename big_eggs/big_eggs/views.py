@@ -9,3 +9,7 @@ def main(request):
 
 def impressum(request):
     return render(request, "big_eggs/impressum.html")
+
+
+def datenschutz(request):
+    return render(request, "big_eggs/datenschutz.html")
