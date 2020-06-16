@@ -1,6 +1,7 @@
 import uuid
 
 from django.contrib.auth.models import AbstractUser
+from django.core.mail import mail_admins
 from django.db import models
 
 from tenants.models import Tenant
@@ -19,6 +20,7 @@ class User(AbstractUser):
             t = Tenant()
             t.save()
             t.users.add(self)
+            mail_admins("New User: " + self.email, "")
 
     @property
     def tenant(self):
