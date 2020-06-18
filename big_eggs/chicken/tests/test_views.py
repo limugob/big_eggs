@@ -43,13 +43,16 @@ class EggsListTests(TestCase):
         self.client.force_login(self.user)
         with scope(tenant=self.user.tenant_id):
             Egg.objects.create()
-            Egg.objects.create()
-            Egg.objects.create()
+            Egg.objects.create(laid=today_midnight() - datetime.timedelta(days=1))
+            Egg.objects.create(laid=today_midnight() - datetime.timedelta(days=1))
+            Egg.objects.create(laid=today_midnight() - datetime.timedelta(days=1))
 
-            Egg.objects.create(laid=today_midnight() - datetime.timedelta(days=10))
+            Egg.objects.create(laid=today_midnight() - datetime.timedelta(days=11))
 
             response = self.client.get(reverse("eggs_list"))
             self.assertEqual(response.status_code, 200)
+
+            # todays entries and after 10 days are not counted
             self.assertEqual(3, response.context["sum_all"])
             self.assertEqual(10, response.context["minus_days"])
             self.assertEqual(0.3, response.context["average"])
