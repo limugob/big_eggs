@@ -22,5 +22,5 @@ class BEContactView(ContactView):
     success_url = "/"
 
     def form_valid(self, form):
-        messages.success(self.request, "Vielen Dank für Ihren Nachricht.")
+        messages.success(self.request, "Vielen Dank für Ihre Nachricht.")
         return super().form_valid(form)
