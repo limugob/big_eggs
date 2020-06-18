@@ -87,7 +87,7 @@ ROOT_URLCONF = "big_eggs.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "big_eggs/core/templates"],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -153,7 +153,7 @@ AUTH_USER_MODEL = "big_eggs_auth.User"
 INTERNAL_IPS = env.list("INTERNAL_IPS")
 
 STATICFILES_DIRS = [
-    BASE_DIR / "big_eggs/core/static",
+    # BASE_DIR / "big_eggs/core/static",
 ]
 
 STATIC_ROOT = BASE_DIR / "static"
