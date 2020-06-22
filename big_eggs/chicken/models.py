@@ -86,9 +86,16 @@ class Egg(TenantDataModel):
     quantity = models.PositiveIntegerField(default=1)
 
     class Error(models.TextChoices):
-        NONE = ("N", "keine")
-        WIND_EGG = ("W", "Windei")
-        BROKEN = ("Z", "Zerstört")
+        NONE = "N", "keine"
+        BAUCH = "B", "Bauchei"
+        DOPPEL = "D", "Doppeldotter"
+        EI_IM_EI = "E", "Ei im Ei"
+        KALK = "A", "Kalkablagerungen"
+        KNICK = "K", "Knickei"
+        WIND = "W", "Windei"
+        SPAR = "S", "Sparei"
+        SPUR = "P", "Spurei"
+        BROKEN = "Z", "Zerstört"
 
     error = models.CharField("Fehler", default="N", max_length=1, choices=Error.choices)
 
