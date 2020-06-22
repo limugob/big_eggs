@@ -31,7 +31,7 @@ def naive_date_to_current_datetime(date):
 def eggs_list(request, minus_days=10):
     last_ten_days = today_midnight() - datetime.timedelta(days=minus_days)
     eggs = Egg.objects.filter(laid__gte=last_ten_days)
-    egg_filter = EggFilter(request.GET, queryset=eggs)
+    egg_filter = EggFilter(request.GET, queryset=eggs, request=request)
     entries = egg_filter.qs.order_by("-laid")
     entries = entries.values("laid__date", "group__name", "group", "error")
     entries = entries.annotate(eggs_count=Sum("quantity"))

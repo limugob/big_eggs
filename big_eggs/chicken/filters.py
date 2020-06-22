@@ -1,15 +1,21 @@
 import django_filters
-from django_scopes import scopes_disabled
 
-from .models import Egg
+from .models import ChickenGroup, Egg
 
-with scopes_disabled():
 
-    class EggFilter(django_filters.FilterSet):
-        error = django_filters.ChoiceFilter(
-            choices=Egg.Error.choices, empty_label="nicht filtern",
-        )
+def tenant_groups(request):
+    if request is None:
+        ChickenGroup.objects.none()
+    return ChickenGroup.objects.all()
 
-        class Meta:
-            model = Egg
-            fields = ["group", "error"]
+
+class EggFilter(django_filters.FilterSet):
+    group = django_filters.ModelChoiceFilter(queryset=tenant_groups)
+
+    error = django_filters.ChoiceFilter(
+        choices=Egg.Error.choices, empty_label="nicht filtern",
+    )
+
+    class Meta:
+        model = Egg
+        fields = ["group", "error"]
