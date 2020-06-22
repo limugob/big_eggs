@@ -87,7 +87,7 @@ ROOT_URLCONF = "big_eggs.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "big_eggs/big_eggs/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -167,9 +167,14 @@ ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 10
 LOGIN_REDIRECT_URL = reverse_lazy("eggs_list")
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_SESSION_REMEMBER = True
 
 STRONGHOLD_PUBLIC_URLS = (r"/accounts*",)  # allauth
 STRONGHOLD_PUBLIC_URLS += (r"/contact*",)  # envelope
+
+if DEBUG:
+    STRONGHOLD_PUBLIC_URLS += (r"/__debug__/*",)  # debug-toolbar
 
 STRONGHOLD_PUBLIC_NAMED_URLS = ("main", "impressum", "datenschutz")
 
