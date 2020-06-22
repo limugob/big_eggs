@@ -12,9 +12,11 @@ from .utils import today_midnight
 
 
 class ChickenGroup(TenantDataModel):
-    name = models.CharField(max_length=60, blank=True)
+    name = models.CharField(max_length=60)
     selectable = models.BooleanField(
-        default=True, help_text="Group selectable in egg input form?"
+        "Auswählbar",
+        default=True,
+        help_text="Gruppe auswählbar bei der Eingabe von Eiern?",
     )
 
     def __str__(self):
