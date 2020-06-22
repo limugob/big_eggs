@@ -74,10 +74,14 @@ class Chicken(TenantDataModel):
 class Egg(TenantDataModel):
     laid = models.DateTimeField(default=today_midnight)
     group = models.ForeignKey(
-        ChickenGroup, blank=True, null=True, on_delete=models.CASCADE
+        ChickenGroup,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name="Gruppe",
     )
     chicken = models.ForeignKey(
-        Chicken, blank=True, null=True, on_delete=models.CASCADE
+        Chicken, blank=True, null=True, on_delete=models.CASCADE,
     )
     quantity = models.PositiveIntegerField(default=1)
 
