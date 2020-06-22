@@ -12,4 +12,4 @@ with scopes_disabled():
 
         class Meta:
             model = Egg
-            fields = ["error", "group"]
+            fields = ["group", "error"]
