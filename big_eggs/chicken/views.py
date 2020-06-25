@@ -142,7 +142,20 @@ class ChickenList(ChickenGeneric, ListView):
 
 
 class ChickenCreate(ChickenGeneric, CreateView):
-    pass
+    def form_valid(self, form):
+        out = super().form_valid(form)
+        self.object.entry = naive_date_to_current_datetime(
+            form.cleaned_data["entry_date"]
+        )
+        self.object.hatching = naive_date_to_current_datetime(
+            form.cleaned_data["hatching_date"]
+        )
+        if form.cleaned_data["departure_date"]:
+            self.object.departure = naive_date_to_current_datetime(
+                form.cleaned_data["departure_date"]
+            )
+        self.object.save()
+        return out
 
 
 class ChickenUpdate(ChickenGeneric, UpdateView):
