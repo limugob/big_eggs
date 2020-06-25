@@ -34,39 +34,27 @@
 
     <div class="container">
       <div class="row mx-md-n5">
-
+        <div class="col-md-2">
           <nav class="navbar navbar-expand-md navbar-light bg-light">
             {% comment %} <a class="navbar-brand" href="#">Navbar</a> {% endcomment %}
-            {% comment %} <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
-            </button> {% endcomment %}
+            </button>
 
-            <ul class="nav nav-tabs flex-column flex-sm-row" id="mainNav">
-              <li>
-                <a class="nav-link {% if active == "eggs_list" %}active{% endif %}" href='{% url 'eggs_list' %}'>
-                  <img src="{% static "icons/eggs.svg" %}" height=50rem >
-                  <span class="mx-2 d-none d-md-inline">Eier</span>
-                </a>
-              </li>
-              <li>
-                <a class="nav-link {% if active == "chicken_list" %}active{% endif %}" href='{% url 'chicken_list' %}'>
-                  <img src="{% static "icons/chicken.svg" %}" height=50rem>
-                  <span class="mx-2 d-none d-md-inline">Hühner</span>
-                </a>
-              </li>
-              <li>
-                <a class="nav-link {% if active == "chickengroup_list" %}active{% endif %}" href='{% url 'chickengroup_list' %}'>
-                  <img src="{% static "icons/control_gear.svg" %}" height=50rem>
-                  <span class="mx-2 d-none d-md-inline">Einstellungen</span>
-                </a>
-              </li>
-              <li>
-                <a class="nav-link" href='{% url 'account_logout' %}'>Abmelden</a>
-              </li>
-            </ul>
+            <nav class="nav nav-pills flex-column collapse navbar-collapse" id="mainNav">
+              <a class="nav-link {% if active == "eggs_list" %}active{% endif %}" href='{% url 'eggs_list' %}'>Eier</a>
+              <a class="nav-link {% if active == "chicken_list" %}active{% endif %}" href='{% url 'chicken_list' %}'>Hühner</a>
+              <hr>
+              <a class="nav-link {% if active == "chickengroup_list" %}active{% endif %}" href='{% url 'chickengroup_list' %}'>Einstellungen</a>
+              <a class="nav-link" href='{% url 'account_logout' %}'>Abmelden</a>
+            </nav>
           </nav>
+        </div>
+        <div class="col-md-10" id="content">
 
-            {% block content %}{% endblock content %}
+            {% block content %}{% endblock %}
+
+        </div>
       </div>
     </div>
 
