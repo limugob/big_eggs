@@ -28,6 +28,7 @@ class ChickenAdmin(DisabledScopesMixin, admin.ModelAdmin):
             },
         ),
     )
+    list_filter = ("tenant",)
 
     def age_display(self, object):
         return relativedelta_to_str(object.age())

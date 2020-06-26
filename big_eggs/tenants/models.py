@@ -6,6 +6,13 @@ from django_scopes import ScopedManager, get_scope, scopes_disabled
 
 class Tenant(models.Model):
     users = models.ManyToManyField("big_eggs_auth.User")
+    name = models.CharField(max_length=60, blank=True)
+
+    def __str__(self):
+        out = f"T {self.id}"
+        if self.name:
+            out += f" - {self.name}"
+        return out
 
 
 class UUIDModel(models.Model):
