@@ -1,29 +1,10 @@
 {% extends "big_eggs/main.html" %}
 
-{% block main %}
-  <div class="container">
-    {% block body %}
-      {% comment %} <div>
-        <strong>Menu:</strong>
-        <ul>
-          {% if user.is_authenticated %}
-          <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
-          <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
-          {% else %}
-          <li><a href="{% url 'account_login' %}">Sign In</a></li>
-          <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
-          {% endif %}
-        </ul>
-      </div>
-      <hr> {% endcomment %}
-      {% block content %}
-      {% endblock content %}
-    {% endblock body %}
-    {% block extra_body %}
-    {% endblock %}
-  </div>
+
+{% block end_hook %}
   <script>
     $("button").addClass("btn btn-primary");
+    $(".primaryAction").addClass("btn btn-primary");
   </script>
 
-{% endblock main %}
+{% endblock end_hook %}

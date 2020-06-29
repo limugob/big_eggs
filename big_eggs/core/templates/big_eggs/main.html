@@ -1,8 +1,9 @@
 {% load static %}
+{% load octicons %}
 {% load chicken_utils %}
 
 <!doctype html>
-<html class="h-100" lang="de">
+<html lang="de">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,64 +13,57 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   </head>
-  <body class="d-flex flex-column h-100">
-    {% block messages %}
-    {% if messages %}
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          {% for message in messages %}
-            <div class="alert alert-{{message.level|to_bs_level}}" role="alert">
-              {{ message }}
-            </div>
-          {% endfor %}
+  <body>
+
+    <div id="brand">
+      <div class="container">
+        <div>
+          <a href="/">
+            <img src="{% static "icons/bigeggs_logo.svg" %}" width="auto" alt="bigeggs logo">
+            <span id="sitename">bigeggs.app </span>
+          </a>
+        </div>
+        <div>
+          {% if user.is_authenticated %}
+
+            <a id="logout" href='{% url 'account_logout' %}'>
+            {% octicon "sign-out" scale=4 height=24 class="large" %}
+            <span style='padding-left: 0.7em'>Abmelden
+            </span></a>
+          {% endif %}
         </div>
       </div>
     </div>
-    {% endif %}
+
+    {% block header %}{% endblock header %}
+
+    {% block messages %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{message.level|to_bs_level}} container" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
     {% endblock messages %}
 
-    <main role="main" class="flex-shrink-0">
-    {% block main %}
-
-    <div class="container">
-      <div class="row mx-md-n5">
-        <div class="col-md-2">
-          <nav class="navbar navbar-expand-md navbar-light bg-light">
-            {% comment %} <a class="navbar-brand" href="#">Navbar</a> {% endcomment %}
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <nav class="nav nav-pills flex-column collapse navbar-collapse" id="mainNav">
-              <a class="nav-link {% if active == "eggs_list" %}active{% endif %}" href='{% url 'eggs_list' %}'>Eier</a>
-              <a class="nav-link {% if active == "chicken_list" %}active{% endif %}" href='{% url 'chicken_list' %}'>Hühner</a>
-              <hr>
-              <a class="nav-link {% if active == "chickengroup_list" %}active{% endif %}" href='{% url 'chickengroup_list' %}'>Einstellungen</a>
-              <a class="nav-link" href='{% url 'account_logout' %}'>Abmelden</a>
-            </nav>
-          </nav>
-        </div>
-        <div class="col-md-10" id="content">
-
-            {% block content %}{% endblock %}
-
-        </div>
-      </div>
-    </div>
-
-    {% endblock main %}
+    <main role="main" class="container content">
+      {% block content %}{% endblock content %}
     </main>
 
-    <footer class="footer mt-auto py-3 border-top">
-      <div class="container">
+    <footer class="footer mt-auto py-3 border-top container">
+      {% comment %} <div class="container"> {% endcomment %}
         <a class="btn btn-link" href="{% url "impressum" %}"> Impressum </a> |
         <a class="btn btn-link" href="{% url "datenschutz" %}"> Datenschutz </a> |
         <a class="btn btn-link" href="{% url "envelope-contact" %}"> Kontakt </a>
-      </div>
+      {% comment %} </div> {% endcomment %}
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    {% block end_hook %}
+    {% endblock end_hook %}
+
   </body>
 </html>
