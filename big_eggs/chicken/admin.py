@@ -39,5 +39,9 @@ class CommonAdmin(DisabledScopesMixin, admin.ModelAdmin):
     list_filter = ("tenant",)
 
 
+@admin.register(Egg)
+class EggsAdmin(CommonAdmin):
+    list_select_related = ("group",)
+
+
 admin.site.register(ChickenGroup, CommonAdmin)
-admin.site.register(Egg, CommonAdmin)
