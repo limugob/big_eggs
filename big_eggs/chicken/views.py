@@ -138,7 +138,12 @@ class ChickenGeneric:
 
 class ChickenList(ChickenGeneric, ListView):
     def get_queryset(self):
-        return super().get_queryset().select_related("group").order_by("entry")
+        return (
+            super()
+            .get_queryset()
+            .select_related("group")
+            .order_by("group__name", "name", "entry")
+        )
 
 
 class ChickenCreate(ChickenGeneric, CreateView):
