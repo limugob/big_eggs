@@ -19,6 +19,9 @@ class ChickenGroup(TenantDataModel):
         help_text="Gruppe auswählbar bei der Eingabe von Eiern?",
     )
 
+    class Meta:
+        ordering = ("name",)
+
     def __str__(self):
         return self.name
 
@@ -72,7 +75,7 @@ class Chicken(TenantDataModel):
 
 
 class Egg(TenantDataModel):
-    laid = models.DateTimeField(default=today_midnight)
+    laid = models.DateTimeField("Legedatum", default=today_midnight)
     group = models.ForeignKey(
         ChickenGroup,
         blank=True,
@@ -83,7 +86,7 @@ class Egg(TenantDataModel):
     chicken = models.ForeignKey(
         Chicken, blank=True, null=True, on_delete=models.CASCADE,
     )
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField("Anzahl", default=1)
 
     class Error(models.TextChoices):
         NONE = "N", "keine"
@@ -99,11 +102,26 @@ class Egg(TenantDataModel):
 
     error = models.CharField("Fehler", default="N", max_length=1, choices=Error.choices)
 
+    class Size(models.TextChoices):
+        NONE = "N", "---"
+        S = "S", "S: < 53g"
+        M = "M", "M: 53 =< 63g"
+        L = "L", "L: 63 =< 73g"
+        XL = "X", "XL: > 73g"
+
+    size = models.CharField("Größe", default="N", max_length=1, choices=Size.choices)
+
     class Meta:
         ordering = ("-laid",)
-        unique_together = ("tenant_id", "laid", "group", "chicken", "error")
         verbose_name = "Egg"
         verbose_name_plural = "Eggs"
 
     def __str__(self):
-        return "Ei vom {:%d.%m.%Y}".format(timezone.localdate(self.laid))
+        out = "Ei-Eintrag vom {:%d.%m.%Y}".format(timezone.localdate(self.laid))
+        if self.group:
+            out += f" Gruppe: {self.group.name}"
+        if self.error:
+            out += f" Fehler: {self.get_error_display()}"
+        if self.size:
+            out += f" Größe: {self.get_size_display()}"
+        return out
