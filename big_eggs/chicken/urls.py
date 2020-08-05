@@ -5,9 +5,9 @@ from . import views
 urlpatterns = [
     path("eggs_list/", views.eggs_list, name="eggs_list"),
     path("eggs_list/<int:minus_days>/", views.eggs_list, name="eggs_list"),
-    path("eggs_delete/<int:year>/<int:month>/<int:day>/", views.eggs_delete),
+    path("eggs_delete/<uuid:id>/", views.eggs_delete, name="eggs_delete",),
     path(
-        "eggs_delete/<int:year>/<int:month>/<int:day>/<str:group>/<str:error>/",
+        "eggs_delete/<int:year>/<int:month>/<int:day>/",
         views.eggs_delete,
         name="eggs_delete",
     ),

@@ -117,11 +117,13 @@ class Egg(TenantDataModel):
         verbose_name_plural = "Eggs"
 
     def __str__(self):
-        out = "Ei-Eintrag vom {:%d.%m.%Y}".format(timezone.localdate(self.laid))
+        out = "Eintrag vom {:%d.%m.%Y} mit {} Eiern".format(
+            timezone.localdate(self.laid), self.quantity
+        )
         if self.group:
             out += f" Gruppe: {self.group.name}"
-        if self.error:
+        if self.error != "N":
             out += f" Fehler: {self.get_error_display()}"
-        if self.size:
-            out += f" Größe: {self.get_size_display()}"
+        if self.size != "N":
+            out += f" Größe: {self.size}"
         return out

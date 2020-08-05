@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.utils.timezone import localdate
 from django.utils.translation import ngettext
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -30,23 +31,22 @@ def naive_date_to_current_datetime(date):
 
 def eggs_list(request, minus_days=10):
     last_ten_days = today_midnight() - datetime.timedelta(days=minus_days)
-    eggs = Egg.objects.filter(laid__gte=last_ten_days)
+    eggs = Egg.objects.filter(laid__gte=last_ten_days).select_related("group")
     egg_filter = EggFilter(request.GET, queryset=eggs, request=request)
     entries = egg_filter.qs.order_by("-laid")
-    entries = entries.values("laid__date", "group__name", "group", "error")
-    entries = entries.annotate(eggs_count=Sum("quantity"))
 
     eggs_per_day = defaultdict(list)
     sum_per_day = defaultdict(int)
-    for entry in entries:
-        eggs_per_day[entry["laid__date"]].append(entry)
-        sum_per_day[entry["laid__date"]] += entry["eggs_count"]
+    for egg_entry in entries:
+        eggs_per_day[localdate(egg_entry.laid)].append(egg_entry)
+        sum_per_day[localdate(egg_entry.laid)] += egg_entry.quantity
 
     out = []
     current_dt = last_ten_days
     Entry = namedtuple("Entry", ["date", "count", "eggs_list"])
-    while current_dt <= today_midnight():
-        current_date = timezone.localdate(current_dt)
+    tmc = today_midnight()
+    while current_dt <= tmc:
+        current_date = localdate(current_dt)
         out.append(
             Entry(current_dt, sum_per_day[current_date], eggs_per_day[current_date])
         )
@@ -62,25 +62,8 @@ def eggs_list(request, minus_days=10):
     elif request.method == "POST":
         form = EggBulkForm(request.POST)
         if form.is_valid():
-            date = form.cleaned_data["date"]
-            aware_date = timezone.make_aware(
-                datetime.datetime.combine(date, datetime.datetime.min.time())
-            )
-            count = form.cleaned_data["count"]
-            entry, created = Egg.objects.get_or_create(
-                laid=aware_date,
-                group_id=form.cleaned_data["group"] or None,
-                error=form.cleaned_data["error"],
-            )
-            if created:
-                entry.quantity = count
-            else:
-                entry.quantity += count
-            entry.save()
-            message_text = ngettext(
-                "Ein Eintrag gespeichert.", "%(count)d Einträge gespeichert.", count
-            ) % {"count": count,}
-            messages.success(request, message_text)
+            form.save()
+            messages.success(request, "Eintrag gespeichert.")
             return HttpResponseRedirect(reverse("eggs_list"))
 
     return render(
@@ -99,14 +82,14 @@ def eggs_list(request, minus_days=10):
     )
 
 
-def eggs_delete(request, year, month, day, group=None, error=None):
-    error = error or Egg.Error.NONE
-    date = datetime.date(year=year, month=month, day=day)
-    eggs = Egg.objects.filter(laid__date=date, error=error)
-    if group:
-        if group == "None":
-            group = None
-        eggs = eggs.filter(group_id=group)
+def eggs_delete(request, year=None, month=None, day=None, id=None):
+    """ Delete egg entries with given id or date (year, month, day).
+    """
+    if id:
+        eggs = Egg.objects.filter(pk=id)
+    else:
+        date = datetime.date(year=year, month=month, day=day)
+        eggs = Egg.objects.filter(laid__date=date)
     if not eggs:
         messages.warning(request, "Keine Daten zum Löschen vorhanden.")
         return HttpResponseRedirect(reverse("eggs_list"))

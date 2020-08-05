@@ -27,11 +27,14 @@
             <ul class="list-group list-group-flush">
               {% for egg in day.eggs_list %}
                 <li class="list-group-item">
-                  <b>{{ egg.group__name|default:'ohne' }}:</b> {{ egg.eggs_count }}
+                  <b>{{ egg.group.name|default:'ohne' }}:</b> {{ egg.quantity }}
                   {% if egg.error != 'N' %}
-                    ({{ egg.error|error_to_str }})
+                    ({{ egg.get_error_display }})
                   {% endif %}
-                  <a class="btn btn-outline-danger btn-sm ml-5" href="/chicken/eggs_delete/{{ egg.laid__date|date:'Y'}}/{{ egg.laid__date|date:'m' }}/{{ egg.laid__date|date:'d'}}/{{ egg.group }}/{{ egg.error|default:"None" }}/" >
+                  {% if egg.size != 'N' %}
+                    <b>{{ egg.size }}</b>
+                  {% endif %}
+                  <a class="btn btn-outline-danger btn-sm ml-5" href="/chicken/eggs_delete/{{ egg.pk }}/" >
                     {% octicon "x" scale=4 height=20 class="large" %}
                   </a>
                 </li>

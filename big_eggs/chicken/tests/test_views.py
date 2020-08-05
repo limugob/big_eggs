@@ -6,6 +6,7 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils import timezone
 from django_scopes import scope
+from django_scopes.state import scopes_disabled
 
 from ..models import ChickenGroup, Egg
 from ..utils import today_midnight
@@ -75,13 +76,7 @@ class EggsListTests(TestCase):
 
             self.assertEqual(Egg.objects.count(), 3)
 
-            post = {
-                "year": date.year,
-                "month": date.month,
-                "day": date.day,
-                "group": "None",
-                "error": "N",
-            }
+            post = {"year": date.year, "month": date.month, "day": date.day}
             url = reverse("eggs_delete", kwargs=post)
             response = self.client.post(url, post)
             self.assertEqual(response.status_code, 302)
@@ -100,13 +95,7 @@ class EggsListTests(TestCase):
 
             self.assertEqual(Egg.objects.count(), 1)
 
-            post = {
-                "year": date.year,
-                "month": date.month,
-                "day": date.day,
-                "group": "None",
-                "error": "N",
-            }
+            post = {"year": date.year, "month": date.month, "day": date.day}
             url = reverse("eggs_delete", kwargs=post)
             response = self.client.get(url, post)
             self.assertIn(egg, response.context["eggs"])
@@ -124,8 +113,6 @@ class EggsListTests(TestCase):
                 "year": date.year,
                 "month": date.month,
                 "day": date.day,
-                "group": "None",
-                "error": "N",
             }
             url = reverse("eggs_delete", kwargs=post)
             response = self.client.post(url, post)
@@ -139,17 +126,18 @@ class EggsListTests(TestCase):
         self.client.force_login(self.user)
         with scope(tenant=self.user.tenant_id):
             post = {
-                "date": "2020-01-01",
-                "count": 5,
+                "laid": "2020-01-01",
+                "quantity": 5,
                 "group": self.group.id,
                 "error": Egg.Error.NONE,
+                "size": Egg.Size.NONE,
             }
             url = reverse("eggs_list")
             response = self.client.post(url, post)
 
             self.assertEqual(response.status_code, 302)
+            print(response)
             self.assertEqual(response.url, reverse("eggs_list"))
-
             self.assertEqual(Egg.objects.count(), 1)
             self.assertEqual(Egg.objects.first().quantity, 5)
 
@@ -160,14 +148,17 @@ class EggsListTests(TestCase):
         self.client.force_login(self.user)
         with scope(tenant=self.user.tenant_id):
             post = {
-                "date": "2020-01-01",
-                "count": 5,
+                "laid": "2020-01-01",
+                "quantity": 5,
                 "group": self.group.id,
                 "error": Egg.Error.NONE,
+                "size": Egg.Size.NONE,
             }
             url = reverse("eggs_list")
             response = self.client.post(url, post)
             response_second = self.client.post(url, post)
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response_second.status_code, 302)
 
-            self.assertEqual(Egg.objects.count(), 1)
-            self.assertEqual(Egg.objects.first().quantity, 10)
+            self.assertEqual(Egg.objects.count(), 2)
+            self.assertEqual(Egg.objects.first().quantity, 5)

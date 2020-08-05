@@ -2,37 +2,34 @@ from django import forms
 from django.utils import timezone
 from django_scopes.forms import SafeModelChoiceField
 
+from core.forms import DateOnlyField
+
 from .models import Chicken, ChickenGroup, Egg
-
-
-def get_chicken_group_choices():
-    return [(None, "---")] + list(
-        ChickenGroup.objects.filter(selectable=True)
-        .values_list("id", "name")
-        .order_by("name")
-    )
 
 
 def today_date():
     return timezone.localdate(timezone.now())
 
 
-class EggBulkForm(forms.Form):
-    date = forms.DateField(
-        initial=today_date,
-        widget=forms.TextInput(attrs={"type": "date", "min": 1, "step": 1,}),
-        label="Datum",
-    )
-    count = forms.IntegerField(min_value=1, initial=1, label="Anzahl",)
-    group = forms.ChoiceField(
-        initial=None, choices=get_chicken_group_choices, required=False, label="Gruppe",
-    )
-    error = forms.ChoiceField(
-        initial=Egg.Error.NONE,
-        required=False,
-        label="Fehler",
-        choices=Egg.Error.choices,
-    )
+class EggBulkForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["group"].queryset = ChickenGroup.objects.all()
+        self.fields["laid"].initial = today_date
+
+    class Meta:
+        model = Egg
+        fields = [
+            "laid",
+            "quantity",
+            "group",
+            "size",
+            "error",
+        ]
+        field_classes = {
+            "laid": DateOnlyField,
+            "group": SafeModelChoiceField,
+        }
 
 
 class ChickenForm(forms.ModelForm):
