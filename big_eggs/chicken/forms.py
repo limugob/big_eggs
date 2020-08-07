@@ -14,7 +14,7 @@ def today_date():
 class EggBulkForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["group"].queryset = ChickenGroup.objects.all()
+        self.fields["group"].queryset = ChickenGroup.objects.filter(selectable=True)
         self.fields["laid"].initial = today_date
 
     class Meta:
