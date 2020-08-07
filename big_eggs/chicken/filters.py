@@ -16,6 +16,10 @@ class EggFilter(django_filters.FilterSet):
         choices=Egg.Error.choices, empty_label="nicht filtern",
     )
 
+    size = django_filters.ChoiceFilter(
+        choices=Egg.Size.choices, empty_label="nicht filtern",
+    )
+
     class Meta:
         model = Egg
-        fields = ["group", "error"]
+        fields = ["group", "size", "error"]
