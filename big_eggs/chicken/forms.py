@@ -14,8 +14,11 @@ def today_date():
 class EggBulkForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["group"].queryset = ChickenGroup.objects.filter(selectable=True)
         self.fields["laid"].initial = today_date
+        chickengroups = ChickenGroup.objects.filter(selectable=True)
+        self.fields["group"].queryset = chickengroups
+        # if len(chickengroups) < 5:
+        # self.fields["group"].widget = forms.RadioSelect()
 
     class Meta:
         model = Egg
@@ -29,6 +32,9 @@ class EggBulkForm(forms.ModelForm):
         field_classes = {
             "laid": DateOnlyField,
             "group": SafeModelChoiceField,
+        }
+        widgets = {
+            "group": forms.RadioSelect,
         }
 
 

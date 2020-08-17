@@ -122,3 +122,24 @@ main {
 .footer {
   flex-shrink: 0;
 }
+
+/* egg list */
+
+#id_group {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+#id_group label{
+  border: 0.04rem solid gray;
+  border-radius: 2px;
+  margin: 2px 4px;
+  padding: 2px 6px;
+}
+
+/* input:checked +{
+  background-color: hotpink;
+} */
