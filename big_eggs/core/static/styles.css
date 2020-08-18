@@ -125,26 +125,30 @@ main {
 
 /* egg list */
 
-#id_group {
+.checked-radio {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
   padding-left: 0;
   margin-bottom: 0;
+  margin-top: -6px;
 }
 
-#id_group input{
+.checked-radio input{
   visibility: hidden;
 }
 
-#id_group span{
+.checked-radio span{
   border: 0.03rem solid gray;
   border-radius: 2px;
-  margin: 2px 8px 2px -13px;
-  padding: 2px 6px;
+  margin: 2px 6px;
+  padding: 4px 8px;
 }
 
-input:checked +span{
+.checked-radio input:checked +span{
   background-color: lightgray;
+}
 
+#id_size span{
+  padding: 4px 12px;
 }

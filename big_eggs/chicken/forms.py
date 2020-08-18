@@ -35,6 +35,7 @@ class EggBulkForm(forms.ModelForm):
         }
         widgets = {
             "group": CheckedRadioSelect,
+            "size": CheckedRadioSelect,
         }
 
 

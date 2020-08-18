@@ -16,3 +16,10 @@ class DateOnlyField(forms.DateField):
 
 class CheckedRadioSelect(forms.widgets.RadioSelect):
     option_template_name = "big_eggs/widgets/radio_option.html"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "class" in self.attrs:
+            self.attrs["class"] += " checked-radio"
+        else:
+            self.attrs["class"] = "checked-radio"
