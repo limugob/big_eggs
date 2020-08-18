@@ -103,11 +103,11 @@ class Egg(TenantDataModel):
     error = models.CharField("Fehler", default="N", max_length=1, choices=Error.choices)
 
     class Size(models.TextChoices):
-        NONE = "N", "---"
-        S = "S", "S: < 53g"
-        M = "M", "M: 53 =< 63g"
-        L = "L", "L: 63 =< 73g"
-        XL = "X", "XL: > 73g"
+        NONE = "N", "---------"
+        S = "S", "S"
+        M = "M", "M"
+        L = "L", "L"
+        XL = "X", "XL"
 
     size = models.CharField("Größe", default="N", max_length=1, choices=Size.choices)
 
@@ -125,5 +125,9 @@ class Egg(TenantDataModel):
         if self.error != "N":
             out += f" Fehler: {self.get_error_display()}"
         if self.size != "N":
-            out += f" Größe: {self.size}"
+            out += f" Größe: {self.get_size_display()}"
         return out
+
+    @classmethod
+    def get_size_definitions():
+        return ["S: < 53g", "M: 53 =< 63g", "L: 63 =< 73g", "XL: > 73g"]

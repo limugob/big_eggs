@@ -32,7 +32,7 @@
                     ({{ egg.get_error_display }})
                   {% endif %}
                   {% if egg.size != 'N' %}
-                    <b>{{ egg.size }}</b>
+                    <b>{{ egg.get_size_display }}</b>
                   {% endif %}
                   <a class="btn btn-outline-danger btn-sm ml-5" href="/chicken/eggs_delete/{{ egg.pk }}/" >
                     {% octicon "x" scale=4 height=20 class="large" %}
