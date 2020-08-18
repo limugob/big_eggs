@@ -2,7 +2,7 @@ from django import forms
 from django.utils import timezone
 from django_scopes.forms import SafeModelChoiceField
 
-from core.forms import DateOnlyField
+from core.forms import CheckedRadioSelect, DateOnlyField
 
 from .models import Chicken, ChickenGroup, Egg
 
@@ -34,7 +34,7 @@ class EggBulkForm(forms.ModelForm):
             "group": SafeModelChoiceField,
         }
         widgets = {
-            "group": forms.RadioSelect,
+            "group": CheckedRadioSelect,
         }
 
 

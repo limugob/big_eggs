@@ -12,3 +12,7 @@ class DateOnlyField(forms.DateField):
         return timezone.make_aware(
             datetime.datetime.combine(value_as_date, datetime.datetime.min.time())
         )
+
+
+class CheckedRadioSelect(forms.widgets.RadioSelect):
+    option_template_name = "big_eggs/widgets/radio_option.html"
