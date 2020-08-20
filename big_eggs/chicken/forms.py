@@ -40,39 +40,9 @@ class EggBulkForm(forms.ModelForm):
 
 
 class ChickenForm(forms.ModelForm):
-    hatching_date = forms.DateField(
-        initial=today_date,
-        widget=forms.TextInput(attrs={"type": "date", "min": 1, "step": 1,}),
-        label="Schlupf",
-    )
-    entry_date = forms.DateField(
-        initial=today_date,
-        widget=forms.TextInput(attrs={"type": "date", "min": 1, "step": 1,}),
-        label="Zugang",
-    )
-    departure_date = forms.DateField(
-        widget=forms.TextInput(attrs={"type": "date", "min": 1, "step": 1,}),
-        label="Abgang",
-        required=False,
-    )
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["group"].queryset = ChickenGroup.objects.all()
-
-    def clean(self):
-        if (
-            self.cleaned_data["departure_date"]
-            and self.cleaned_data["entry_date"] > self.cleaned_data["departure_date"]
-        ):
-            raise forms.ValidationError(
-                {"departure_date": "Abgang kann nicht vor Zugang liegen."}
-            )
-        if self.cleaned_data["hatching_date"] > self.cleaned_data["entry_date"]:
-            raise forms.ValidationError(
-                {"entry_date": "Zugang kann nicht vor Schlupf liegen."}
-            )
-        return super().clean()
 
     class Meta:
         model = Chicken
@@ -81,11 +51,14 @@ class ChickenForm(forms.ModelForm):
             "name",
             "group",
             "sex",
-            "hatching_date",
-            "entry_date",
-            "departure_date",
+            "hatching",
+            "entry",
+            "departure",
             "note",
         ]
         field_classes = {
             "group": SafeModelChoiceField,
+            "hatching": DateOnlyField,
+            "entry": DateOnlyField,
+            "departure": DateOnlyField,
         }
