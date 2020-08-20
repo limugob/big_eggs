@@ -5,13 +5,13 @@
 
 <h1>Hühner</h1>
 
-<table class="table table-striped">
+<table class="table table-striped table-sm">
   <thead>
     <tr>
       <th scope="col">#</th>
       <th scope="col">Gruppe</th>
       <th scope="col">Huhn</th>
-      <th scope="col">Geschlecht</th>
+      {% comment %} <th scope="col" class="d-none d-md-block">Geschlecht</th> {% endcomment %}
       <th></th>
     </tr>
   </thead>
@@ -21,7 +21,7 @@
         <td>{{ forloop.counter }}</td>
         <td>{{ chicken.group.name }}</td>
         <td>{{ chicken }}</td>
-        <td>{{ chicken.get_sex_display }}</td>
+        {% comment %} <td>{{ chicken.get_sex_display }}</td> {% endcomment %}
         <td>
           <a class="btn btn-outline-primary btn-sm" href="{% url 'chicken_update' chicken.id %}" >
             {% octicon "pencil" %}
