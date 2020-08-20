@@ -71,7 +71,8 @@ class Chicken(TenantDataModel):
             raise ValidationError(errors)
 
     def age(self):
-        return relativedelta(timezone.now(), self.hatching)
+        until = self.departure or timezone.now()
+        return relativedelta(until, self.hatching)
 
 
 class Egg(TenantDataModel):
