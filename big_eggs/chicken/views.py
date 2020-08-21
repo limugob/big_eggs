@@ -13,7 +13,7 @@ from django.utils.translation import ngettext
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from .filters import EggFilter
+from .filters import ChickenFilterView, EggFilter
 from .forms import ChickenForm, EggBulkForm
 from .models import Chicken, ChickenGroup, Egg
 from .utils import today_midnight
@@ -115,7 +115,9 @@ class ChickenGeneric:
         return context
 
 
-class ChickenList(ChickenGeneric, ListView):
+class ChickenList(ChickenGeneric, ChickenFilterView):
+    template_name = "chicken/chicken_list.html"
+
     def get_queryset(self):
         return (
             super()
