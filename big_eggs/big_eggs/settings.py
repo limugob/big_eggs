@@ -39,6 +39,8 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
+SESSION_SAVE_EVERY_REQUEST = True
+
 
 # Application definition
 
