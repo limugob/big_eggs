@@ -131,7 +131,7 @@ main {
   flex-wrap: wrap;
   padding-left: 0;
   margin-bottom: 0;
-  margin-top: -6px;
+  margin-top: -12px;
 }
 
 .checked-radio input{
@@ -154,5 +154,15 @@ main {
 }
 
 #id_quantity, #id_laid{
-  width: 130px;
+  width: 140px;
+}
+
+#id_note {
+  width: 100%;
+}
+
+.chicken-form p label, .egg-bulk-form p label{
+  display: block;
+  margin-bottom: 0;
+  font-weight: bold;
 }

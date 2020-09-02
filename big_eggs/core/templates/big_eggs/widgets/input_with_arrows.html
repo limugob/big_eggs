@@ -1,6 +1,6 @@
 {% load octicons %}
-<div>
-  <button type="button" class="btn btn-outline-secondary" onclick="callStepDown('id_{{ widget.name }}')">{% octicon "triangle-left" scale=4 height=22 class="large" %} </button>
-    {% include "django/forms/widgets/input.html" %}
-  <button type="button" class="btn btn-outline-secondary" onclick="callStepUp('id_{{ widget.name }}')">{% octicon "triangle-right" scale=4 height=22 class="large" %}</button>
-</div>
+
+<button type="button" class="btn btn-outline-secondary" onclick="callStepDown('id_{{ widget.name }}')">{% octicon "triangle-left" scale=4 height=22 class="large" %} </button>
+  {% include "django/forms/widgets/input.html" %}
+<button type="button" class="btn btn-outline-secondary" onclick="callStepUp('id_{{ widget.name }}')">{% octicon "triangle-right" scale=4 height=22 class="large" %}</button>
+
