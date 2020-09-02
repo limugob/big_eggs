@@ -5,7 +5,7 @@ from django.utils import timezone
 
 
 class DateInputWithArrows(forms.widgets.DateInput):
-    template_name = "big_eggs/widgets/date_with_arrows.html"
+    template_name = "big_eggs/widgets/input_with_arrows.html"
     input_type = "date"
 
     def __init__(self, *args, **kwargs):
@@ -41,3 +41,12 @@ class CheckedRadioSelect(forms.widgets.RadioSelect):
             self.attrs["class"] += " checked-radio"
         else:
             self.attrs["class"] = "checked-radio"
+
+
+class NumberInputWithArrows(forms.widgets.NumberInput):
+    template_name = "big_eggs/widgets/input_with_arrows.html"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.attrs["autocomplete"] = "off"
+        self.attrs["min"] = 1
