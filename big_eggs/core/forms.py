@@ -4,12 +4,23 @@ from django import forms
 from django.utils import timezone
 
 
+class DateInputWithArrows(forms.widgets.DateInput):
+    template_name = "big_eggs/widgets/date_with_arrows.html"
+    input_type = "date"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.attrs["min"] = 1
+        self.attrs["step"] = 1
+        self.attrs["autocomplete"] = "off"
+
+
 class DateOnlyField(forms.DateField):
-    widget = forms.TextInput(attrs={"type": "date", "min": 1, "step": 1,})
+    widget = DateInputWithArrows
 
     def prepare_value(self, value):
         if isinstance(value, datetime.datetime):
-            return timezone.localdate(value)
+            return timezone.localdate(value).isoformat()
         return value  # when errors occurs, return unchanged
 
     def to_python(self, value):

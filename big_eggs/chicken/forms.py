@@ -7,14 +7,11 @@ from core.forms import CheckedRadioSelect, DateOnlyField
 from .models import Chicken, ChickenGroup, Egg
 
 
-def today_date():
-    return timezone.localdate(timezone.now())
-
-
 class EggBulkForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["laid"].initial = today_date
+        self.fields["laid"].initial = timezone.localdate().isoformat()
+
         chickengroups = ChickenGroup.objects.filter(selectable=True)
         self.fields["group"].queryset = chickengroups
         # if len(chickengroups) < 5:
