@@ -166,3 +166,10 @@ main {
   margin-bottom: 0;
   font-weight: bold;
 }
+
+@media (min-width: 30em){
+  .chicken-form p label, .egg-bulk-form p label{
+    display: inline-block;
+    width: 10em;
+  }
+}
