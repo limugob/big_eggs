@@ -24,10 +24,18 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script>
       function callStepDown(widget_id) {
-        document.getElementById(widget_id).stepDown();
+        const elem = document.getElementById(widget_id);
+        if (elem.value === ""){
+          elem.value = new Date().toISOString().slice(0,10);
+        }
+        elem.stepDown();
       }
       function callStepUp(widget_id) {
-        document.getElementById(widget_id).stepUp();
+        const elem = document.getElementById(widget_id);
+        if (elem.value === ""){
+          elem.value = new Date().toISOString().slice(0,10);
+        }
+        elem.stepUp();
       }
     </script>
   </head>
