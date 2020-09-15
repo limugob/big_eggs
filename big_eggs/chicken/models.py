@@ -21,6 +21,8 @@ class ChickenGroup(TenantDataModel):
 
     class Meta:
         ordering = ("name",)
+        verbose_name = "Hühnergruppe"
+        verbose_name_plural = "Hühnergruppen"
 
     def __str__(self):
         return self.name
@@ -54,6 +56,10 @@ class Chicken(TenantDataModel):
 
     sex = models.CharField("Geschlecht", max_length=1, default="U", choices=SEX_CHOICES)
     note = models.TextField("Notizen", blank=True)
+
+    class Meta:
+        verbose_name = "Huhn"
+        verbose_name_plural = "Hühner"
 
     def __str__(self):
         return self.name or self.number or str(self.id)

@@ -94,7 +94,11 @@ def eggs_delete(request, year=None, month=None, day=None, id=None):
         messages.warning(request, "Keine Daten zum Löschen vorhanden.")
         return HttpResponseRedirect(reverse("eggs_list"))
     if request.method == "GET":
-        return render(request, "chicken/eggs_delete.html", {"eggs": eggs})
+        return render(
+            request,
+            "chicken/confirm_delete.html",
+            {"eggs": eggs, "cancel_url": reverse("eggs_list")},
+        )
     elif request.method == "POST":
         count, _ = eggs.delete()
         message_text = ngettext(
@@ -138,6 +142,11 @@ class ChickenUpdate(ChickenGeneric, UpdateView):
 class ChickenDelete(ChickenGeneric, DeleteView):
     template_name = "chicken/confirm_delete.html"
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["cancel_url"] = context["object"].get_absolute_url()
+        return context
+
 
 class ChickenGroupGeneric:
     model = ChickenGroup
@@ -164,3 +173,8 @@ class ChickenGroupUpdate(ChickenGroupGeneric, UpdateView):
 
 class ChickenGroupDelete(ChickenGroupGeneric, DeleteView):
     template_name = "chicken/confirm_delete.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["cancel_url"] = context["object"].get_absolute_url()
+        return context
