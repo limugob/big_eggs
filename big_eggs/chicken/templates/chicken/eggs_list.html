@@ -22,7 +22,7 @@
     {% for day in eggs_by_day %}
       <tr>
         <td>
-          {{ day.date|date }}<br>
+          {{ day.date|date:"SHORT_DATE_FORMAT"}}<br>
           <div class="card collapse" id="details{{ forloop.counter }}">
             <ul class="list-group list-group-flush">
               {% for egg in day.eggs_list %}
