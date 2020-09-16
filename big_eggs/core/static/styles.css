@@ -167,6 +167,11 @@ main {
   font-weight: bold;
 }
 
+.eggs_list_day_details {
+  margin-right: -105%;
+  margin-top: 1em;
+}
+
 @media (min-width: 30em){
   .chicken-form p label, .egg-bulk-form p label{
     display: inline-block;

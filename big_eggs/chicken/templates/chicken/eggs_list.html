@@ -23,7 +23,7 @@
       <tr>
         <td>
           {{ day.date|date:"SHORT_DATE_FORMAT"}}<br>
-          <div class="card collapse" id="details{{ forloop.counter }}">
+          <div class="card collapse eggs_list_day_details" id="details{{ forloop.counter }}">
             <ul class="list-group list-group-flush">
               {% for egg in day.eggs_list %}
                 <li class="list-group-item">
