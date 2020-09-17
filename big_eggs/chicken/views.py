@@ -1,17 +1,19 @@
 import datetime
+import itertools
 from collections import defaultdict, namedtuple
 
 from django.contrib import messages
 from django.core.exceptions import SuspiciousOperation
 from django.db.models import Count, Sum
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, request
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.utils import timezone
+from django.utils import formats, timezone
 from django.utils.timezone import localdate
 from django.utils.translation import ngettext
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 from .filters import ChickenFilterView, EggFilter
 from .forms import ChickenForm, EggBulkForm
@@ -29,7 +31,34 @@ def naive_date_to_current_datetime(date):
     )
 
 
-def eggs_list(request, minus_days=10):
+def eggs_list_stats(request, entries):
+    import matplotlib.pyplot as plt
+
+    # https://matplotlib.org/gallery/lines_bars_and_markers/bar_stacked.html#sphx-glr-gallery-lines-bars-and-markers-bar-stacked-py
+
+    labels = list(map(lambda x: formats.date_format(x.date, "j.n"), entries))
+    ### TODO this dateformat is only for germany
+    values = list(map(lambda x: x.count, entries))
+
+    width = 0.35  # the width of the bars: can also be len(x) sequence
+
+    fig, ax = plt.subplots()
+
+    ax.bar(labels, values, width, label="Eier")
+
+    ax.set_ylabel("Eier")
+    ax.set_xlabel("Datum")
+    # ax.set_title("Scores by group and gender")
+    # ax.legend()
+
+    canvas = FigureCanvas(fig)
+    response = HttpResponse(content_type="image/png")
+    canvas.print_png(response)
+    return response
+    # plt.show()
+
+
+def eggs_list(request, minus_days=10, stats=False):
     last_ten_days = today_midnight() - datetime.timedelta(days=minus_days)
     eggs = Egg.objects.filter(laid__gte=last_ten_days).select_related("group")
     egg_filter = EggFilter(request.GET, queryset=eggs, request=request)
@@ -55,9 +84,12 @@ def eggs_list(request, minus_days=10):
         )
         current_dt += datetime.timedelta(days=1)
 
+    if stats:
+        return eggs_list_stats(request, out)
+
     sum_all = sum(sum_per_day.values())
     # todays value must be substract (else sum will change after each input for today)
-    sum_all -= sum_per_day[today_midnight().date()]
+    sum_all -= sum_per_day[tmc.date()]
     average = sum_all / minus_days
 
     if request.method == "GET":
@@ -67,7 +99,9 @@ def eggs_list(request, minus_days=10):
         if form.is_valid():
             form.save()
             messages.success(request, "Eintrag gespeichert.")
-            return HttpResponseRedirect(reverse("eggs_list"))
+            return HttpResponseRedirect(
+                reverse("eggs_list", kwargs={"minus_days": minus_days})
+            )
 
     return render(
         request,
@@ -76,7 +110,7 @@ def eggs_list(request, minus_days=10):
             "eggs_by_day": reversed(out),
             "active": "eggs_list",
             "form": form,
-            "form_action": reverse("eggs_list"),
+            "form_action": reverse("eggs_list", kwargs={"minus_days": minus_days}),
             "average": average,
             "sum_all": sum_all,
             "minus_days": minus_days,

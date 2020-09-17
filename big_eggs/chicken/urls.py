@@ -3,8 +3,13 @@ from django.urls import include, path, re_path
 from . import views
 
 urlpatterns = [
-    path("eggs_list/", views.eggs_list, name="eggs_list"),
     path("eggs_list/<int:minus_days>/", views.eggs_list, name="eggs_list"),
+    path(
+        "eggs_list/<int:minus_days>/stats.png",
+        views.eggs_list,
+        {"stats": True},
+        name="eggs_list_stats",
+    ),
     path("eggs_delete/<uuid:id>/", views.eggs_delete, name="eggs_delete",),
     path(
         "eggs_delete/<int:year>/<int:month>/<int:day>/",
