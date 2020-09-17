@@ -10,6 +10,26 @@
 {% octicon "plus" scale=4 height=24 class="large" %} <span style='padding-left: 0.7em'>Eingabe</span>
 </button>
 
+<details id="filter" class="border border-primary rounded mt-2 mb-2 p-1" {% if filters_active %}open{% endif %}>
+  <summary>
+    Auswertung
+  </summary>
+  <div>
+    <br>
+    <h4>Filter</h4>
+    <form method="get">
+      {{ filter.form.as_p }}
+      <button type="submit" class="btn btn-secondary"> Anwenden </button>
+    </form>
+    <br>
+    <h4>Statistik</h4>
+    <p>
+      <b>Summe</b> (letzte {{ minus_days }} Tage): <b>{{ sum_all }}</b> <br>
+      Durchschnittliche Anzahl Eier pro Tag: <b>{{ average|floatformat  }} </b>
+    </p>
+  </div>
+</details>
+
 <table class="table table-striped">
   <thead>
     <tr>
@@ -57,23 +77,8 @@
 </table>
 
 <a class="btn btn-secondary" href="{% url 'eggs_list' minus_days|add:"10" %}">
-weitere 10 Tage anzeigen
+Weitere 10 Tage anzeigen
 </a>
-
-<p>
-<br><br>
-<b>Summe</b> (letzte {{ minus_days }} Tage): <b>{{ sum_all }}</b> <br>
-Durchschnittliche Anzahl Eier pro Tag: <b>{{ average|floatformat  }} </b> <br>
-{% comment %} Trend: <b> {{ trend }} </b> <br> {% endcomment %}
-</p>
-
-
-<h2>Filter: </h2>
-<form method="get">
-  {{ filter.form.as_p }}
-  <button type="submit" class="btn btn-secondary"> Anwenden </button>
-</form>
-<br>
 
 <!-- Modal -->
 <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-hidden="true">

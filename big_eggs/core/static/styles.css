@@ -178,3 +178,8 @@ main {
     width: 10em;
   }
 }
+
+#filter label {
+  margin-left: 1em;
+  margin-right: 0.2em;
+}

@@ -35,6 +35,9 @@ def eggs_list(request, minus_days=10):
     egg_filter = EggFilter(request.GET, queryset=eggs, request=request)
     entries = egg_filter.qs.order_by("-laid")
 
+    # indicate if filter is active on query
+    filters_active = any(request.GET.values())
+
     eggs_per_day = defaultdict(list)
     sum_per_day = defaultdict(int)
     for egg_entry in entries:
@@ -78,6 +81,7 @@ def eggs_list(request, minus_days=10):
             "sum_all": sum_all,
             "minus_days": minus_days,
             "filter": egg_filter,
+            "filters_active": filters_active,
         },
     )
 
