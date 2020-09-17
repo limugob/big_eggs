@@ -10,14 +10,14 @@
 {% octicon "plus" scale=4 height=24 class="large" %} <span style='padding-left: 0.7em'>Eingabe</span>
 </button>
 
-<details id="filter" class="border border-primary rounded mt-2 mb-2 p-1" {% if filters_active %}open{% endif %}>
+<details id="filter" class="border border-primary rounded mt-2 mb-2 p-1" {% if filters_active %}open{% endif %} ontoggle="filter_reset('filter')">
   <summary>
     Auswertung
   </summary>
   <div>
     <br>
     <h4>Filter</h4>
-    <form method="get">
+    <form method="get" id="filter-form">
       {{ filter.form.as_p }}
       <button type="submit" class="btn btn-secondary"> Anwenden </button>
     </form>

@@ -37,6 +37,14 @@
         }
         elem.stepUp();
       }
+      function filter_reset(widget_id) {
+        /* On closing details of filter reload the page with non filters
+        */
+        const elem = document.getElementById(widget_id);
+        if (!elem.open) {
+          window.location.href = ".";
+        }
+      }
     </script>
   </head>
   <body>
