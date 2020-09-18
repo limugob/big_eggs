@@ -1,8 +1,10 @@
-from django.urls import include, path, re_path
+from django.shortcuts import redirect
+from django.urls import path
 
 from . import views
 
 urlpatterns = [
+    path("eggs_list/", lambda request: redirect("eggs_list", "10"), name="eggs_list"),
     path("eggs_list/<int:minus_days>/", views.eggs_list, name="eggs_list"),
     path(
         "eggs_list/<int:minus_days>/stats.png",

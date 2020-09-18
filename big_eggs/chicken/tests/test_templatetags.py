@@ -12,7 +12,7 @@ from ..templatetags.chicken_utils import (
 class TagsTests(TestCase):
     def test_to_class_name(self):
         out = to_class_name(Chicken())
-        self.assertEqual(out, "Chicken")
+        self.assertEqual(out, "Huhn")
 
     def test_to_bs_level(self):
         out = to_bs_level(10)

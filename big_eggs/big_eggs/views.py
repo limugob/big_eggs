@@ -5,7 +5,7 @@ from envelope.views import ContactView
 
 def main(request):
     if request.user.is_authenticated:
-        return redirect("eggs_list", "10")
+        return redirect("eggs_list")
     return render(request, "big_eggs/index.html")
 
 

@@ -7,7 +7,7 @@
       <div id="navigation" class="container">
         <ul class="tabrow">
           <li class="{% if active == "eggs_list" %}active{% endif %}">
-            <a class="btn btn-link" href='{% url 'eggs_list' minus_days=10 %}'>
+            <a class="btn btn-link" href='{% url 'eggs_list' %}'>
               <img src="{% static "icons/eggs.svg" %}" height=40rem >
               <span class="d-none d-md-inline">Eier</span>
             </a>

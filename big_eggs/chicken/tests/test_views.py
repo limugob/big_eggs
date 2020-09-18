@@ -33,7 +33,7 @@ class EggsListTests(TestCase):
         If no entries, show blank table.
         """
         self.client.force_login(self.user)
-        response = self.client.get(reverse("eggs_list"))
+        response = self.client.get(reverse("eggs_list", kwargs={"minus_days": 10}))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(10, response.context["minus_days"])
 
@@ -50,7 +50,7 @@ class EggsListTests(TestCase):
 
             Egg.objects.create(laid=today_midnight() - datetime.timedelta(days=11))
 
-            response = self.client.get(reverse("eggs_list"))
+            response = self.client.get(reverse("eggs_list", kwargs={"minus_days": 10}))
             self.assertEqual(response.status_code, 200)
 
             # todays entries and after 10 days are not counted
@@ -132,12 +132,14 @@ class EggsListTests(TestCase):
                 "error": Egg.Error.NONE,
                 "size": Egg.Size.NONE,
             }
-            url = reverse("eggs_list")
+            url = reverse("eggs_list", kwargs={"minus_days": 10})
             response = self.client.post(url, post)
 
             self.assertEqual(response.status_code, 302)
             print(response)
-            self.assertEqual(response.url, reverse("eggs_list"))
+            self.assertEqual(
+                response.url, reverse("eggs_list", kwargs={"minus_days": 10})
+            )
             self.assertEqual(Egg.objects.count(), 1)
             self.assertEqual(Egg.objects.first().quantity, 5)
 
@@ -154,7 +156,7 @@ class EggsListTests(TestCase):
                 "error": Egg.Error.NONE,
                 "size": Egg.Size.NONE,
             }
-            url = reverse("eggs_list")
+            url = reverse("eggs_list", kwargs={"minus_days": 10})
             response = self.client.post(url, post)
             response_second = self.client.post(url, post)
             self.assertEqual(response.status_code, 302)
