@@ -29,7 +29,7 @@
       <b>Summe</b> (letzte {{ minus_days }} Tage): <b>{{ sum_all }}</b> <br>
       Durchschnittliche Anzahl Eier pro Tag: <b>{{ average|floatformat  }} </b>
     </p>
-    <img src="stats.png" loading="lazy" class="img-fluid">
+    <img src="stats.png?{{ request.GET.urlencode }}" loading="lazy" class="img-fluid">
   </div>
 </details>
 
