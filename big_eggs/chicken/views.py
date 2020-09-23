@@ -54,6 +54,7 @@ def eggs_list_stats(request, entries):
     canvas = FigureCanvas(fig)
     response = HttpResponse(content_type="image/png")
     canvas.print_png(response)
+    plt.close()
     return response
     # plt.show()
 
