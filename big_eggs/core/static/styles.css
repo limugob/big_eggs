@@ -177,9 +177,18 @@ main {
     display: inline-block;
     width: 10em;
   }
+
+  .filters {
+    flex-flow: column wrap;
+  }
 }
 
-#filter label {
-  margin-left: 1em;
-  margin-right: 0.2em;
+.filters p {
+  margin-right: 2em;
 }
+
+.filters {
+  display: flex;
+  flex-flow: row wrap;
+}
+
