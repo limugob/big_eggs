@@ -5,6 +5,34 @@
 
 <h1>Hühner</h1>
 
+<a class="btn btn-primary" href="{% url 'chicken_add'%}" >
+{% octicon "plus" scale=4 height=24 class="large" %}
+<span style='padding-left: 0.7em'> Hinzufügen </span></a>
+
+<details id="filter" class="border border-primary rounded mt-2 mb-2 p-1" {% if filters_active %}open{% endif %} ontoggle="filter_reset('filter')">
+  <summary>
+    Auswertung
+  </summary>
+  <div>
+    <br>
+    <h4>Filter</h4>
+    <form method="get" id="filter-form">
+      <div class="filters" >
+        {{ filter.form.as_p }}
+      </div>
+      <button type="submit" class="btn btn-secondary" > Anwenden </button>
+    </form>
+    <br>
+    {% comment %} <h4>Statistik</h4>
+    <p>
+      <b>Summe</b> (letzte {{ minus_days }} Tage): <b>{{ sum_all }}</b> <br>
+      Durchschnittliche Anzahl Eier pro Tag: <b>{{ average|floatformat  }} </b>
+    </p>
+    <img src="stats.png?{{ request.GET.urlencode }}" loading="lazy" class="img-fluid"> {% endcomment %}
+  </div>
+</details>
+
+
 <table class="table table-striped">
   <thead>
     <tr>
@@ -33,15 +61,5 @@
   </tbody>
 </table>
 
-
-<a class="btn btn-primary" href="{% url 'chicken_add'%}" >
-{% octicon "plus" scale=4 height=24 class="large" %}
-<span style='padding-left: 0.7em'>Eingabe</span></a>
-<br> <br>
-<h2>Filter: </h2>
-<form method="get">
-  {{ filter.form.as_p }}
-  <button type="submit" class="btn btn-secondary"> Anwenden </button>
-</form>
 
 {% endblock content %}

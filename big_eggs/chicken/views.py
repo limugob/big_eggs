@@ -171,6 +171,11 @@ class ChickenList(ChickenGeneric, ChickenFilterView):
             .order_by("group__name", "name", "entry")
         )
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["filters_active"] = any(self.request.GET.values())
+        return context
+
 
 class ChickenCreate(ChickenGeneric, CreateView):
     pass
