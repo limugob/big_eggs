@@ -2,6 +2,16 @@
 {% load octicons %}
 {% load chicken_utils %}
 
+{% block script %}
+  {{ block.super }}
+  {% if addanother %}
+    window.onload = () => {
+      $('#modalForm').modal('show');
+    };
+  {% endif %}
+
+{% endblock script %}
+
 {% block content %}
 
 <h1>Eier</h1>
@@ -84,7 +94,7 @@ Weitere 10 Tage anzeigen
 </a>
 
 <!-- Modal -->
-<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal show" data-show="true" id="modalForm" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -100,7 +110,8 @@ Weitere 10 Tage anzeigen
             {{ form.as_p }}
             <div class="modal-footer">
                 {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> {% endcomment %}
-                <button type="submit" class="btn btn-primary">Speichern</button>
+                <button type="submit" class="btn btn-primary" name="_addanother" value="_addanother">Speichern und neue Eingabe</button>
+                <button type="submit" class="btn btn-primary" name="_safe" value="_safe">Speichern</button>
             </div>
           </div>
         </form>

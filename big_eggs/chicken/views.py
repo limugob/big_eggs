@@ -100,9 +100,10 @@ def eggs_list(request, minus_days=10, stats=False):
         if form.is_valid():
             form.save()
             messages.success(request, "Eintrag gespeichert.")
-            return HttpResponseRedirect(
-                reverse("eggs_list", kwargs={"minus_days": minus_days})
-            )
+            redirect_url = request.path
+            if "_addanother" in request.POST:
+                redirect_url += "?_addanother"
+            return HttpResponseRedirect(redirect_url)
 
     return render(
         request,
@@ -117,6 +118,7 @@ def eggs_list(request, minus_days=10, stats=False):
             "minus_days": minus_days,
             "filter": egg_filter,
             "filters_active": filters_active,
+            "addanother": "_addanother" in request.GET,
         },
     )
 
