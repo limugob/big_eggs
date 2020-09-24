@@ -40,6 +40,9 @@ with scopes_disabled():
             label="Im Bestand",
             required=True,
         )
+        sex = django_filters.ChoiceFilter(
+            choices=Chicken.SEX_CHOICES, empty_label="nicht filtern"
+        )
 
         def name_filter(self, queryset, name, value):
             return queryset.filter(
@@ -50,7 +53,7 @@ with scopes_disabled():
 
         class Meta:
             model = Chicken
-            fields = ["name", "group", "in_stock"]
+            fields = ["name", "group", "in_stock", "sex"]
 
     class ChickenFilterView(FilterView):
         filterset_class = ChickenFilter

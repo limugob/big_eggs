@@ -49,9 +49,9 @@ class Chicken(TenantDataModel):
     departure = models.DateTimeField("Abgang", blank=True, null=True)
 
     SEX_CHOICES = [
-        ("U", "---"),
-        ("W", "♀"),
-        ("M", "♂"),
+        ("U", "Unbekannt"),
+        ("W", "Henne"),
+        ("M", "Hahn"),
     ]
 
     sex = models.CharField("Geschlecht", max_length=1, default="U", choices=SEX_CHOICES)
