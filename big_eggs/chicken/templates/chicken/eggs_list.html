@@ -17,7 +17,7 @@
 <h1>Eier</h1>
 
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalForm">
-{% octicon "plus" scale=4 height=24 class="large" %} <span style='padding-left: 0.7em'>Eingabe</span>
+{% octicon "plus" scale=4 height=24 class="large" %} <span style='padding-left: 0.7em'>Hinzufügen</span>
 </button>
 
 <details id="filter" class="border border-primary rounded mt-2 mb-2 p-1" {% if filters_active %}open{% endif %} ontoggle="filter_reset('filter')">
@@ -110,7 +110,7 @@ Weitere 10 Tage anzeigen
             {{ form.as_p }}
             <div class="modal-footer">
                 {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> {% endcomment %}
-                <button type="submit" class="btn btn-primary" name="_addanother" value="_addanother">Speichern und neue Eingabe</button>
+                <button type="submit" class="btn btn-primary" name="_addanother" value="_addanother">Speichern und neu hinzufügen</button>
                 <button type="submit" class="btn btn-primary" name="_safe" value="_safe">Speichern</button>
             </div>
           </div>
