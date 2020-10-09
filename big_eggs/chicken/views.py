@@ -31,25 +31,89 @@ def naive_date_to_current_datetime(date):
     )
 
 
-def eggs_list_stats(request, entries):
+def eggs_list_stats(request, today_minus_days, minus_days, entries):
+    import pandas as pd
+    import numpy as np
     import matplotlib.pyplot as plt
 
-    # https://matplotlib.org/gallery/lines_bars_and_markers/bar_stacked.html#sphx-glr-gallery-lines-bars-and-markers-bar-stacked-py
+    data = entries.values_list("laid", "group__name", "quantity")
+    df = pd.DataFrame(data, columns=["laid", "group__name", "quantity"])
+    df["laid"] = df["laid"].dt.tz_convert(timezone.get_current_timezone())
 
-    labels = list(map(lambda x: formats.date_format(x.date, "j.n"), entries))
-    ### TODO this dateformat is only for germany
-    values = list(map(lambda x: x.count, entries))
-
-    width = 0.35  # the width of the bars: can also be len(x) sequence
+    index = pd.date_range(
+        today_minus_days,
+        today_minus_days + datetime.timedelta(minus_days),
+        # tz=timezone.get_current_timezone(),
+        freq="D",
+        name="laid",
+    )
 
     fig, ax = plt.subplots()
+    width = 0.6
 
-    ax.bar(labels, values, width, label="Eier")
+    # out = pd.DataFrame()
+    forego = None
+    for group in sorted(
+        set(df.group__name), key=lambda x: str.upper(x) if x else "zzzzzzzzz"
+    ):
+        if group is None:
+            groups_eggs = df[df.group__name.isnull()]
+        else:
+            groups_eggs = df[df.group__name == group]
+        groups_eggs = groups_eggs.drop(columns="group__name").groupby("laid").sum()
+        groups_eggs = groups_eggs.reindex(index, fill_value=0)
+        kwargs = {"label": group or "ohne"}
+        if forego is None:
+            forego = groups_eggs
+        else:
+            kwargs["bottom"] = np.concatenate(forego.values).tolist()
+            forego += groups_eggs
+
+        data = np.concatenate(groups_eggs.values).tolist()
+        ax.bar(index.date.tolist(), data, width, **kwargs)
+
+    # ax.set_xticks(10)
+    for tick in ax.get_xticklabels():
+        tick.set_rotation(35)
 
     ax.set_ylabel("Eier")
     ax.set_xlabel("Datum")
-    # ax.set_title("Scores by group and gender")
-    # ax.legend()
+    # ax.set_ymargin(2)
+    # ax.set_xmargin(2)
+    # fig.align_labels()
+    # fig.margin
+    ax.legend()
+    plt.subplots_adjust(bottom=0.20)
+
+    # df["laid"] = df["laid"].dt.tz_convert("Europe/Berlin").dt.date
+
+    # df.pivot_table(
+    #     columns="laid",
+    #     # columns=list(pd.date_range(df["laid"].min(), df["laid"].max()).date),
+    #     ## ist falsch, max ist nicht der höchst wert
+    #     values="quantity",
+    #     index="group__name",
+    #     fill_value=0,
+    #     aggfunc="sum",
+    # )
+    # import matplotlib.pyplot as plt
+
+    # # https://matplotlib.org/gallery/lines_bars_and_markers/bar_stacked.html#sphx-glr-gallery-lines-bars-and-markers-bar-stacked-py
+
+    # labels = list(map(lambda x: formats.date_format(x.date, "j.n"), entries))
+    # ### TODO this dateformat is only for germany
+    # values = list(map(lambda x: x.count, entries))
+
+    # width = 0.35  # the width of the bars: can also be len(x) sequence
+
+    # fig, ax = plt.subplots()
+
+    # ax.bar(labels, values, width, label="Eier")
+
+    # ax.set_ylabel("Eier")
+    # ax.set_xlabel("Datum")
+    # # ax.set_title("Scores by group and gender")
+    # # ax.legend()
 
     canvas = FigureCanvas(fig)
     response = HttpResponse(content_type="image/png")
@@ -60,10 +124,13 @@ def eggs_list_stats(request, entries):
 
 
 def eggs_list(request, minus_days=10, stats=False):
-    last_ten_days = today_midnight() - datetime.timedelta(days=minus_days)
-    eggs = Egg.objects.filter(laid__gte=last_ten_days).select_related("group")
+    today_minus_days = today_midnight() - datetime.timedelta(days=minus_days)
+    eggs = Egg.objects.filter(laid__gte=today_minus_days).select_related("group")
     egg_filter = EggFilter(request.GET, queryset=eggs, request=request)
     entries = egg_filter.qs.order_by("-laid")
+
+    if stats:
+        return eggs_list_stats(request, today_minus_days, minus_days, entries)
 
     # indicate if filter is active on query
     filters_active = any(request.GET.values())
@@ -75,7 +142,7 @@ def eggs_list(request, minus_days=10, stats=False):
         sum_per_day[localdate(egg_entry.laid)] += egg_entry.quantity
 
     out = []
-    current_dt = last_ten_days
+    current_dt = today_minus_days
     Entry = namedtuple("Entry", ["date", "count", "eggs_list"])
     tmc = today_midnight()
     while current_dt <= tmc:
@@ -84,9 +151,6 @@ def eggs_list(request, minus_days=10, stats=False):
             Entry(current_dt, sum_per_day[current_date], eggs_per_day[current_date])
         )
         current_dt += datetime.timedelta(days=1)
-
-    if stats:
-        return eggs_list_stats(request, out)
 
     sum_all = sum(sum_per_day.values())
     # todays value must be substract (else sum will change after each input for today)
