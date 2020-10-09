@@ -2,10 +2,6 @@ import datetime
 import itertools
 from collections import defaultdict, namedtuple
 
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import seaborn as sns
 from django.contrib import messages
 from django.core.exceptions import SuspiciousOperation
 from django.db.models import Count, Sum
@@ -17,6 +13,11 @@ from django.utils.timezone import localdate
 from django.utils.translation import ngettext
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.dates import DateFormatter
 

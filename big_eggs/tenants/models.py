@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+
 from django_scopes import ScopedManager, get_scope, scopes_disabled
 
 

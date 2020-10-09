@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from django_scopes import scope, scopes_disabled
 
 from .models import Tenant

@@ -2,10 +2,11 @@
 
 import uuid
 
-import chicken.models
 import django.db.models.deletion
 import django.utils.timezone
 from django.db import migrations, models
+
+import chicken.models
 
 
 class Migration(migrations.Migration):

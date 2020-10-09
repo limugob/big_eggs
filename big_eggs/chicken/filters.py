@@ -1,5 +1,6 @@
-import django_filters
 from django.db.models import Q
+
+import django_filters
 from django_filters.filters import CharFilter
 from django_filters.views import FilterView
 from django_scopes import scopes_disabled

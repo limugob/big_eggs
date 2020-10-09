@@ -2,6 +2,7 @@
 
 from django.db import migrations
 from django.db.models import Sum
+
 from django_scopes import scopes_disabled
 
 

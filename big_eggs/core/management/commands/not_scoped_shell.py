@@ -5,6 +5,7 @@ from contextlib import suppress
 from django.apps import apps
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
+
 from django_scopes import scope, scopes_disabled
 
 

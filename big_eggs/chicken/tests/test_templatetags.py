@@ -1,5 +1,6 @@
-from dateutil import relativedelta
 from django.test import TestCase
+
+from dateutil import relativedelta
 
 from ..models import Chicken
 from ..templatetags.chicken_utils import (

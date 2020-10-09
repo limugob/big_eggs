@@ -1,6 +1,7 @@
-from dateutil import relativedelta
 from django import template
 from django.utils.translation import ngettext
+
+from dateutil import relativedelta
 
 from ..models import Egg
 
