@@ -13,8 +13,12 @@ def tenant_groups(request):
     return ChickenGroup.objects.all()
 
 
+def selectable_tenant_groups(request):
+    return tenant_groups(request).filter(selectable=True)
+
+
 class EggFilter(django_filters.FilterSet):
-    group = django_filters.ModelChoiceFilter(queryset=tenant_groups)
+    group = django_filters.ModelChoiceFilter(queryset=selectable_tenant_groups)
 
     error = django_filters.ChoiceFilter(
         choices=Egg.Error.choices, empty_label="nicht filtern",
