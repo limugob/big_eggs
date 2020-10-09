@@ -164,3 +164,19 @@ class EggsListTests(TestCase):
 
             self.assertEqual(Egg.objects.count(), 2)
             self.assertEqual(Egg.objects.first().quantity, 5)
+
+    def test_eggs_stats(self):
+        self.client.force_login(self.user)
+        with scope(tenant=self.user.tenant_id):
+            Egg.objects.create(laid=today_midnight() - datetime.timedelta(days=1))
+            Egg.objects.create(
+                laid=today_midnight() - datetime.timedelta(days=2),
+                group_id=self.group.id,
+            )
+            Egg.objects.create(laid=today_midnight() - datetime.timedelta(days=4))
+
+        self.client.force_login(self.user)
+        response = self.client.get(
+            reverse("eggs_list_stats", kwargs={"minus_days": 10})
+        )
+        self.assertEqual(response.status_code, 200)
