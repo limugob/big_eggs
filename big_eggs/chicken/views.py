@@ -72,17 +72,25 @@ def eggs_list_stats(request, today_minus_days, minus_days, entries):
         data = np.concatenate(groups_eggs.values).tolist()
         ax.bar(index.date.tolist(), data, width, **kwargs)
 
+    ax.plot(
+        index.date.tolist(),
+        forego.rolling(3, center=True).mean(),
+        "o-b",
+        label="3-Tage Durchschnitt",
+        solid_capstyle="round",
+    )
+
     # ax.set_xticks(10)
     for tick in ax.get_xticklabels():
         tick.set_rotation(35)
 
     ax.set_ylabel("Eier")
-    ax.set_xlabel("Datum")
+    # ax.set_xlabel("Datum")
     # ax.set_ymargin(2)
     # ax.set_xmargin(2)
     # fig.align_labels()
     # fig.margin
-    ax.legend()
+    ax.legend(shadow=True)
     plt.subplots_adjust(bottom=0.20)
 
     # df["laid"] = df["laid"].dt.tz_convert("Europe/Berlin").dt.date
