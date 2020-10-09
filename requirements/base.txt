@@ -11,4 +11,6 @@ pandas==1.1.2
 postgres==3.0.0
 python-dateutil==2.8.1
 pytz==2020.1
+
+seaborn==0.11.0
 whitenoise==5.0.1

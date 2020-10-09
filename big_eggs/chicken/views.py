@@ -2,6 +2,10 @@ import datetime
 import itertools
 from collections import defaultdict, namedtuple
 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
 from django.contrib import messages
 from django.core.exceptions import SuspiciousOperation
 from django.db.models import Count, Sum
@@ -33,9 +37,8 @@ def naive_date_to_current_datetime(date):
 
 
 def eggs_list_stats(request, today_minus_days, minus_days, entries):
-    import pandas as pd
-    import numpy as np
-    import matplotlib.pyplot as plt
+
+    sns.set_theme(palette="flare")
 
     data = entries.values_list("laid", "group__name", "quantity")
     df = pd.DataFrame(data, columns=["laid", "group__name", "quantity"])
@@ -50,7 +53,7 @@ def eggs_list_stats(request, today_minus_days, minus_days, entries):
     )
 
     fig, ax = plt.subplots()
-    width = 0.6
+    width = 0.5
 
     # out = pd.DataFrame()
     forego = None
@@ -87,12 +90,8 @@ def eggs_list_stats(request, today_minus_days, minus_days, entries):
 
     ax.xaxis.set_major_formatter(DateFormatter("%d.%m.%Y"))
     ax.set_ylabel("Eier")
-    # ax.set_xlabel("Datum")
-    # ax.set_ymargin(2)
-    # ax.set_xmargin(2)
-    # fig.align_labels()
-    # fig.margin
     ax.legend(shadow=True)
+    ax.margins(y=0.05)
     plt.subplots_adjust(bottom=0.20)
 
     # df["laid"] = df["laid"].dt.tz_convert("Europe/Berlin").dt.date
