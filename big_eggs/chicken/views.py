@@ -14,6 +14,7 @@ from django.utils.translation import ngettext
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.dates import DateFormatter
 
 from .filters import ChickenFilterView, EggFilter
 from .forms import ChickenForm, EggBulkForm
@@ -84,6 +85,7 @@ def eggs_list_stats(request, today_minus_days, minus_days, entries):
     for tick in ax.get_xticklabels():
         tick.set_rotation(35)
 
+    ax.xaxis.set_major_formatter(DateFormatter("%d.%m.%Y"))
     ax.set_ylabel("Eier")
     # ax.set_xlabel("Datum")
     # ax.set_ymargin(2)
