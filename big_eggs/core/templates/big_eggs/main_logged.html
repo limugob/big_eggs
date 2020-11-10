@@ -6,20 +6,20 @@
     <div id="header">
       <div id="navigation" class="container">
         <ul class="tabrow">
-          <li class="{% if active == "eggs_list" %}active{% endif %}">
-            <a class="btn btn-link" href='{% url 'eggs_list' %}'>
+          <li class="nav-item {% if active == "eggs_list" %}active{% endif %}">
+            <a class="btn nav-link" href='{% url 'eggs_list' %}'>
               <img src="{% static "icons/eggs.svg" %}" height=40rem >
               <span class="d-none d-md-inline">Eier</span>
             </a>
           </li>
           <li class="nav-link {% if active == "chicken_list" %}active{% endif %}">
-            <a class="btn btn-link" href='{% url 'chicken_list' %}'>
+            <a class="btn nav-link" href='{% url 'chicken_list' %}'>
               <img src="{% static "icons/chicken.svg" %}" height=40rem>
               <span class="d-none d-md-inline">Hühner</span>
             </a>
           </li>
           <li class="nav-link {% if active == "chickengroup_list" %}active{% endif %}">
-            <a class="btn btn-link" href='{% url 'chickengroup_list' %}'>
+            <a class="btn nav-link" href='{% url 'chickengroup_list' %}'>
               <img src="{% static "icons/control_gear.svg" %}" height=40rem>
               <span class="d-none d-md-inline">Einstellungen</span>
             </a>

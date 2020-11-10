@@ -79,11 +79,7 @@ body {
   text-align: center;
   list-style: none;
   padding: 0;
-  line-height: 24px;
-  height: 60px;
   overflow: hidden;
-  font-size: 12px;
-  font-family: verdana;
   position: relative;
   margin-bottom: 0;
 }
