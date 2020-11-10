@@ -42,6 +42,16 @@ def eggs_list_stats(request, today_minus_days, minus_days, entries):
     sns.set_theme(palette="flare")
 
     data = entries.values_list("laid", "group__name", "quantity")
+
+    if not data:
+        fig, ax = plt.subplots()
+        ax.text(0.3, 0.3, "Keine Daten vorhanden", rotation=25)
+        canvas = FigureCanvas(fig)
+        response = HttpResponse(content_type="image/png")
+        canvas.print_png(response)
+        plt.close()
+        return response
+
     df = pd.DataFrame(data, columns=["laid", "group__name", "quantity"])
     df["laid"] = df["laid"].dt.tz_convert(timezone.get_current_timezone())
 
@@ -198,8 +208,7 @@ def eggs_list(request, minus_days=10, stats=False):
 
 
 def eggs_delete(request, year=None, month=None, day=None, id=None):
-    """ Delete egg entries with given id or date (year, month, day).
-    """
+    """Delete egg entries with given id or date (year, month, day)."""
     if id:
         eggs = Egg.objects.filter(pk=id)
     else:
