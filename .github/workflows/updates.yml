@@ -1,0 +1,45 @@
+name: Automagical updates
+
+on:
+  workflow_dispatch:  # run manually
+  schedule:
+    - cron: '0 16 * * *'  # 08:00 pacific
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Find Python version
+        id: python-version
+        shell: bash
+        run: |
+          echo "::set-output name=python-version::$(cat .python-version)"
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ steps.python-version.outputs.python-version }}
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Run pre-commit autoupdate
+        run: pre-commit autoupdate
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3.14.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: update/pre-commit-auto-update
+          title: Auto-update pre-commit hooks
+          delete-branch: true
+          author: "GitHub Actions Bot <actions@github.com>"
+          committer: "GitHub Actions Bot <actions@github.com>"
+          commit-message: Auto-update pre-commit hooks
+          body: |
+            Update pre-commit hooks. Since this is somthing that's not
+            supported by dependabot.
+          labels: automation, dependencies

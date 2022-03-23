@@ -1,0 +1,16 @@
+django==3.0.11
+django-allauth
+django-envelope
+django-environ
+django-filter
+django-octicons
+django-scopes
+django-stronghold
+matplotlib
+pandas
+psycopg2==2.8.6
+python-dateutil
+seaborn
+django-debug-toolbar
+pre-commit
+coverage
