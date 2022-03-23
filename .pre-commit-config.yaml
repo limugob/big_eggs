@@ -1,21 +1,45 @@
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+      - id: check-xml
+      - id: debug-statements
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+
   - repo: https://github.com/psf/black
-    rev: stable
+    rev: 22.1.0
     hooks:
       - id: black
-        language_version: python3.8
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.0.1
-    hooks:
-      - id: trailing-whitespace
-      - id: check-ast
-      - id: check-builtin-literals
-      - id: requirements-txt-fixer
-  - repo: https://github.com/asottile/seed-isort-config
-    rev: v2.1.1
-    hooks:
-      - id: seed-isort-config
-  - repo: https://github.com/timothycrosley/isort
-    rev: 4.3.21  # pick the isort version you'd like to use from https://github.com/timothycrosley/isort/releases
+
+  - repo: https://github.com/pycqa/isort/
+    rev: 5.10.1
     hooks:
       - id: isort
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.31.1
+    hooks:
+      - id: pyupgrade
+        args: [--py39-plus]
+
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.9.2
+    hooks:
+      - id: flake8
+        args: ['--config=setup.cfg']
+        additional_dependencies: [flake8-isort]
+
+  - repo: https://github.com/rtts/djhtml
+    rev: v1.5.0
+    hooks:
+      - id: djhtml
+        args: ['--tabwidth=2']
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.8.0.4
+    hooks:
+      - id: shellcheck

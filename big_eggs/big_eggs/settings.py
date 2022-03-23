@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-import os
 from pathlib import Path
 
 from django.urls import reverse_lazy
@@ -122,9 +121,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -188,7 +193,7 @@ EMAIL_CONFIG = env.email_url("EMAIL_URL")
 vars().update(EMAIL_CONFIG)
 
 # fmt: off
-from django.test import utils   # isort:skip
-from django_scopes import scopes_disabled   # isort:skip
+from django.test import utils   # isort:skip # noqa: E402
+from django_scopes import scopes_disabled   # isort:skip # noqa: E402
 utils.setup_databases = scopes_disabled()(utils.setup_databases)    # isort:skip
 # fmt: on
