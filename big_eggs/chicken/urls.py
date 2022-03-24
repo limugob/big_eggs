@@ -12,7 +12,11 @@ urlpatterns = [
         {"stats": True},
         name="eggs_list_stats",
     ),
-    path("eggs_delete/<uuid:id>/", views.eggs_delete, name="eggs_delete",),
+    path(
+        "eggs_delete/<uuid:id>/",
+        views.eggs_delete,
+        name="eggs_delete",
+    ),
     path(
         "eggs_delete/<int:year>/<int:month>/<int:day>/",
         views.eggs_delete,

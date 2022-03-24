@@ -1,7 +1,6 @@
 from django.db.models import Q
 
 import django_filters
-from django_filters.filters import CharFilter
 from django_filters.views import FilterView
 from django_scopes import scopes_disabled
 
@@ -22,11 +21,13 @@ class EggFilter(django_filters.FilterSet):
     group = django_filters.ModelChoiceFilter(queryset=selectable_tenant_groups)
 
     error = django_filters.ChoiceFilter(
-        choices=Egg.Error.choices, empty_label="nicht filtern",
+        choices=Egg.Error.choices,
+        empty_label="nicht filtern",
     )
 
     size = django_filters.ChoiceFilter(
-        choices=Egg.Size.choices, empty_label="nicht filtern",
+        choices=Egg.Size.choices,
+        empty_label="nicht filtern",
     )
 
     class Meta:
@@ -64,8 +65,7 @@ with scopes_disabled():
         filterset_class = ChickenFilter
 
         def get_filterset_kwargs(self, filterset_class):
-            """ Set default filters
-            """
+            """Set default filters"""
             kwargs = super().get_filterset_kwargs(filterset_class)
             if kwargs["data"] is None:
                 kwargs["data"] = {"in_stock": True}

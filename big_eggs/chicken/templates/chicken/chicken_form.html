@@ -4,31 +4,31 @@
 
 {% block content %}
 
-<h1>Huhn
-  {% if not chicken.id %}
+  <h1>Huhn
+    {% if not chicken.id %}
       hinzufügen
-  {% else %}
+    {% else %}
       ändern
-  {% endif %}
-</h1>
+    {% endif %}
+  </h1>
 
-<form action="{{ form_action }}" method="post">
-  <div class="form-group chicken-form">
-  {% csrf_token %}
-  {% comment %} <table class="table"> {% endcomment %}
-  {{ form.as_p }}
-  {% comment %} <tr> {% endcomment %}
-    <th>Alter:</th>
-    <td>{{ chicken.age|relativedelta_to_str }} {% if chicken.departure %} (beim Abgang) {% endif %}</td>
-  {% comment %} </table> {% endcomment %}
-  <div>
-      {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> {% endcomment %}
-      <button type="submit" class="btn btn-primary">Speichern</button>
-      {% if chicken.id %}
+  <form action="{{ form_action }}" method="post">
+    <div class="form-group chicken-form">
+      {% csrf_token %}
+      {% comment %} <table class="table"> {% endcomment %}
+      {{ form.as_p }}
+      {% comment %} <tr> {% endcomment %}
+      <th>Alter:</th>
+      <td>{{ chicken.age|relativedelta_to_str }} {% if chicken.departure %} (beim Abgang) {% endif %}</td>
+      {% comment %} </table> {% endcomment %}
+      <div>
+        {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> {% endcomment %}
+        <button type="submit" class="btn btn-primary">Speichern</button>
+        {% if chicken.id %}
           <a class="btn btn-danger" role="button" href="{% url 'chicken_delete' chicken.id %}" >Löschen</a>
-      {% endif %}
-  </div>
-  </div>
-</form>
+        {% endif %}
+      </div>
+    </div>
+  </form>
 
 {% endblock content %}

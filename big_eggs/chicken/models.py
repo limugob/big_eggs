@@ -1,5 +1,3 @@
-import uuid
-
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
@@ -36,7 +34,11 @@ class ChickenGroup(TenantDataModel):
 
 
 class Chicken(TenantDataModel):
-    number = models.CharField("Ringnummer", max_length=60, blank=True,)
+    number = models.CharField(
+        "Ringnummer",
+        max_length=60,
+        blank=True,
+    )
     name = models.CharField(max_length=60, blank=True)
     group = models.ForeignKey(
         ChickenGroup,
@@ -92,7 +94,10 @@ class Egg(TenantDataModel):
         verbose_name="Gruppe",
     )
     chicken = models.ForeignKey(
-        Chicken, blank=True, null=True, on_delete=models.CASCADE,
+        Chicken,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
     )
     quantity = models.PositiveIntegerField("Anzahl", default=1)
 

@@ -6,25 +6,25 @@
 
   <p>
 
-  Sind Sie sicher, dass Sie die Daten:
-  <ul>
-    {% for egg in eggs %}
-      <li>{{ egg }}</li>
-    {% endfor %}
-    {% if object %}
-      <li>{{ object|to_class_name }}: {{ object }}
-    {% endif %}
+    Sind Sie sicher, dass Sie die Daten:
+    <ul>
+      {% for egg in eggs %}
+        <li>{{ egg }}</li>
+      {% endfor %}
+      {% if object %}
+        <li>{{ object|to_class_name }}: {{ object }}
+      {% endif %}
     </ul>
 
 
     löschen möchten?<br>
   </p>
-    <form method="post">
-        <div class="form-group">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Löschen</button>
-            <a href="{{ cancel_url }}" class="btn btn-secondary">Abbrechen</a>
-        </div>
-    </form>
+  <form method="post">
+    <div class="form-group">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Löschen</button>
+      <a href="{{ cancel_url }}" class="btn btn-secondary">Abbrechen</a>
+    </div>
+  </form>
 
 {% endblock content %}

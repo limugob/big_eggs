@@ -4,36 +4,36 @@
 {% block content %}
 
 
-<h1>Einstellungen</h1>
+  <h1>Einstellungen</h1>
 
-<h2>Hühnergruppen</h2>
-<p>Hühner können in Gruppen zusammengefasst werden, sodass alle Eingaben und Auswertungen pro Gruppe erfasst werden können.</p>
-<p>Diese Einstellung ist optional, ohne Gruppen werden Eingaben und Auswertungen für den kompletten Bestand gewertet.</p>
+  <h2>Hühnergruppen</h2>
+  <p>Hühner können in Gruppen zusammengefasst werden, sodass alle Eingaben und Auswertungen pro Gruppe erfasst werden können.</p>
+  <p>Diese Einstellung ist optional, ohne Gruppen werden Eingaben und Auswertungen für den kompletten Bestand gewertet.</p>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Gruppenname</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for group in chickengroup_list %}
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td>{{ group }}</td>
-        <td>
-          <a class="btn btn-outline-primary btn-sm" href="{% url 'chickengroup_update' group.id %}" >
-            {% octicon "pencil" %}
-          </a>
-        </td>
-
+        <th scope="col">Gruppenname</th>
+        <th></th>
       </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {% for group in chickengroup_list %}
+        <tr>
+          <td>{{ group }}</td>
+          <td>
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'chickengroup_update' group.id %}" >
+              {% octicon "pencil" %}
+            </a>
+          </td>
 
-<a class="btn btn-primary" href="{% url 'chickengroup_add'%}" >
-{% octicon "plus" scale=4 height=24 class="large" %}
-<span style='padding-left: 0.7em'>Eingabe</span></a>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a class="btn btn-primary" href="{% url 'chickengroup_add'%}" >
+    {% octicon "plus" scale=4 height=24 class="large" %}
+    <span style='padding-left: 0.7em'>Eingabe</span></a>
 
 {% endblock content %}
