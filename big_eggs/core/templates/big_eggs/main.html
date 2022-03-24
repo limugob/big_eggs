@@ -24,28 +24,28 @@
     <script src="{% static "js/jquery-3.5.1.slim.min.js" %}" ></script>
     <script>
       {% block script %}
-      function callStepDown(widget_id) {
-        const elem = document.getElementById(widget_id);
-        if (elem.value === ""){
-          elem.value = new Date().toISOString().slice(0,10);
+        function callStepDown(widget_id) {
+          const elem = document.getElementById(widget_id);
+          if (elem.value === ""){
+            elem.value = new Date().toISOString().slice(0,10);
+          }
+          elem.stepDown();
         }
-        elem.stepDown();
-      }
-      function callStepUp(widget_id) {
-        const elem = document.getElementById(widget_id);
-        if (elem.value === ""){
-          elem.value = new Date().toISOString().slice(0,10);
+        function callStepUp(widget_id) {
+          const elem = document.getElementById(widget_id);
+          if (elem.value === ""){
+            elem.value = new Date().toISOString().slice(0,10);
+          }
+          elem.stepUp();
         }
-        elem.stepUp();
-      }
-      function filter_reset(widget_id) {
-        /* On closing details of filter reload the page with non filters
+        function filter_reset(widget_id) {
+          /* On closing details of filter reload the page with non filters
         */
-        const elem = document.getElementById(widget_id);
-        if (!elem.open) {
-          window.location.href = ".";
+          const elem = document.getElementById(widget_id);
+          if (!elem.open) {
+            window.location.href = ".";
+          }
         }
-      }
       {% endblock %}
     </script>
   </head>
@@ -63,9 +63,9 @@
           {% if user.is_authenticated %}
 
             <a id="logout" href='{% url 'account_logout' %}'>
-            {% octicon "sign-out" scale=4 height=24 class="large" %}
-            <span style='padding-left: 0.7em'>Abmelden
-            </span></a>
+              {% octicon "sign-out" scale=4 height=24 class="large" %}
+              <span style='padding-left: 0.7em'>Abmelden
+              </span></a>
           {% endif %}
         </div>
       </div>
@@ -89,9 +89,9 @@
 
     <footer class="footer mt-auto py-3 border-top container">
       {% comment %} <div class="container"> {% endcomment %}
-        <a class="btn btn-link" href="{% url "impressum" %}"> Impressum </a> |
-        <a class="btn btn-link" href="{% url "datenschutz" %}"> Datenschutz </a> |
-        <a class="btn btn-link" href="{% url "envelope-contact" %}"> Kontakt </a>
+      <a class="btn btn-link" href="{% url "impressum" %}"> Impressum </a> |
+      <a class="btn btn-link" href="{% url "datenschutz" %}"> Datenschutz </a> |
+      <a class="btn btn-link" href="{% url "envelope-contact" %}"> Kontakt </a>
       {% comment %} </div> {% endcomment %}
     </footer>
 

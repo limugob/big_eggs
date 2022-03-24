@@ -3,7 +3,6 @@ import datetime
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from django.utils import timezone
 
 from django_scopes import scope
 
@@ -30,7 +29,7 @@ class ChickenGroupTests(TestCase):
 
     def test_get_members(self):
         with scope(tenant=self.user.tenant_id):
-            self.assertEquals(self.cg.get_members().count(), 0)
+            self.assertEqual(self.cg.get_members().count(), 0)
 
 
 class ChickenTests(TestCase):
@@ -43,7 +42,7 @@ class ChickenTests(TestCase):
             self.c = c
 
     def test_str(self):
-        self.assertEquals(str(self.c), self.c.name)
+        self.assertEqual(str(self.c), self.c.name)
 
     def test_get_absolute_url(self):
         self.assertIsNot(self.c.get_absolute_url(), "")

@@ -2,12 +2,11 @@ import datetime
 
 from django.contrib.auth import get_user_model
 from django.contrib.messages import get_messages
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
 from django_scopes import scope
-from django_scopes.state import scopes_disabled
 
 from ..models import ChickenGroup, Egg
 from ..utils import today_midnight
@@ -144,7 +143,7 @@ class EggsListTests(TestCase):
             self.assertEqual(Egg.objects.count(), 1)
             self.assertEqual(Egg.objects.first().quantity, 5)
 
-            user_info = [m.message for m in get_messages(response.wsgi_request)]
+            # user_info = [m.message for m in get_messages(response.wsgi_request)]
             # self.assertIn("2 Einträge gelöscht.", user_info)
 
     def test_eggs_insert_entry_double(self):

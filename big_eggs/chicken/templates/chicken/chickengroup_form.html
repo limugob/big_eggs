@@ -3,32 +3,32 @@
 
 {% block content %}
 
-<h1>Hühnergruppe
+  <h1>Hühnergruppe
     {% if not chickengroup.id %}
-        hinzufügen
+      hinzufügen
     {% else %}
-        ändern
+      ändern
     {% endif %}
-</h1>
+  </h1>
 
-<form action="{{ form_action }}" method="post">
+  <form action="{{ form_action }}" method="post">
     <div class="form-group">
-    {% csrf_token %}
-    <table class="table">
-    {{ form }}
-    </table>
+      {% csrf_token %}
+      <table class="table">
+        {{ form }}
+      </table>
 
-    {% if chickengroup.id %}
-    <p>Zugeordnete Hühner: {{ chickengroup.get_members.count }}</p>
-    {% endif %}
-    <div>
+      {% if chickengroup.id %}
+        <p>Zugeordnete Hühner: {{ chickengroup.get_members.count }}</p>
+      {% endif %}
+      <div>
         {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> {% endcomment %}
         <button type="submit" class="btn btn-primary">Speichern</button>
         {% if chickengroup.id %}
-            <a class="btn btn-danger" role="button" href="{% url 'chickengroup_delete' chickengroup.id %}" >Löschen</a>
+          <a class="btn btn-danger" role="button" href="{% url 'chickengroup_delete' chickengroup.id %}" >Löschen</a>
         {% endif %}
+      </div>
     </div>
-    </div>
-</form>
+  </form>
 
 {% endblock content %}

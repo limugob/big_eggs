@@ -3,8 +3,6 @@ from django.utils.translation import ngettext
 
 from dateutil import relativedelta
 
-from ..models import Egg
-
 register = template.Library()
 
 

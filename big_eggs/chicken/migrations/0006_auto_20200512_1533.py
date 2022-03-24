@@ -10,7 +10,7 @@ def none_to_N(apps, schema_editor):
     Egg = apps.get_model("chicken", "Egg")
     updates = Egg.objects.filter(error="").update(error="N")
     print()
-    print("Eggs updated: {}".format(updates))
+    print(f"Eggs updated: {updates}")
 
 
 class Migration(migrations.Migration):

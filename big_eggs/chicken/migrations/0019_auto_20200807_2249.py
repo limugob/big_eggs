@@ -13,7 +13,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterModelOptions(
-            name="chickengroup", options={"ordering": ("name",)},
+            name="chickengroup",
+            options={"ordering": ("name",)},
         ),
         migrations.AlterField(
             model_name="egg",
@@ -43,5 +44,8 @@ class Migration(migrations.Migration):
                 verbose_name="Größe",
             ),
         ),
-        migrations.AlterUniqueTogether(name="egg", unique_together=set(),),
+        migrations.AlterUniqueTogether(
+            name="egg",
+            unique_together=set(),
+        ),
     ]

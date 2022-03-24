@@ -10,7 +10,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name="egg", name="errors",),
+        migrations.RemoveField(
+            model_name="egg",
+            name="errors",
+        ),
         migrations.AddField(
             model_name="egg",
             name="error",

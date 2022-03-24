@@ -1,14 +1,11 @@
 import datetime
-import itertools
 from collections import defaultdict, namedtuple
 
 from django.contrib import messages
-from django.core.exceptions import SuspiciousOperation
-from django.db.models import Count, Sum
-from django.http import HttpResponse, HttpResponseRedirect, request
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.utils import formats, timezone
+from django.utils import timezone
 from django.utils.timezone import localdate
 from django.utils.translation import ngettext
 from django.views.generic import ListView
@@ -118,7 +115,8 @@ def eggs_list_stats(request, today_minus_days, minus_days, entries):
     # )
     # import matplotlib.pyplot as plt
 
-    # # https://matplotlib.org/gallery/lines_bars_and_markers/bar_stacked.html#sphx-glr-gallery-lines-bars-and-markers-bar-stacked-py
+    # # https://matplotlib.org/gallery/lines_bars_and_markers/bar_stacked.html#
+    # sphx-glr-gallery-lines-bars-and-markers-bar-stacked-py
 
     # labels = list(map(lambda x: formats.date_format(x.date, "j.n"), entries))
     # ### TODO this dateformat is only for germany
@@ -227,7 +225,9 @@ def eggs_delete(request, year=None, month=None, day=None, id=None):
         count, _ = eggs.delete()
         message_text = ngettext(
             "Eintrag gelöscht.", "%(count)d Einträge gelöscht.", count
-        ) % {"count": count,}
+        ) % {
+            "count": count,
+        }
         messages.success(request, message_text)
         return HttpResponseRedirect(reverse("eggs_list"))
 

@@ -1,12 +1,11 @@
-### based on https://github.com/pretalx/pretalx/blob/master/src/pretalx/common/management/commands/shell_scoped.py
+# based on https://github.com/pretalx/pretalx/blob/master/src/pretalx/common/management/commands/shell_scoped.py
 
 from contextlib import suppress
 
-from django.apps import apps
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
-from django_scopes import scope, scopes_disabled
+from django_scopes import scopes_disabled
 
 
 class Command(BaseCommand):  # pragma: no cover
