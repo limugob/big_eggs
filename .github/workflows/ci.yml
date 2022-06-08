@@ -30,7 +30,7 @@ jobs:
           echo "::set-output name=python-version::$(cat .python-version)"
 
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ steps.python-version.outputs.python-version }}
 
@@ -81,7 +81,7 @@ jobs:
           echo "::set-output name=python-version::$(cat .python-version)"
 
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ steps.python-version.outputs.python-version }}
           cache: 'pip'
