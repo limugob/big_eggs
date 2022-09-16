@@ -70,7 +70,7 @@ numpy==1.22.3
     #   pandas
     #   scipy
     #   seaborn
-oauthlib==3.2.0
+oauthlib==3.2.1
     # via requests-oauthlib
 packaging==21.3
     # via matplotlib
