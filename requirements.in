@@ -8,7 +8,7 @@ django-scopes
 django-stronghold
 matplotlib
 pandas
-psycopg2==2.8.6
+psycopg2==2.9.5
 python-dateutil
 seaborn
 django-debug-toolbar
