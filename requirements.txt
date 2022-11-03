@@ -14,6 +14,8 @@ cfgv==3.3.1
     # via pre-commit
 charset-normalizer==2.0.12
     # via requests
+contourpy==1.0.6
+    # via matplotlib
 coverage==6.3.2
     # via -r requirements.in
 cryptography==36.0.2
@@ -58,7 +60,7 @@ idna==3.3
     # via requests
 kiwisolver==1.4.0
     # via matplotlib
-matplotlib==3.5.1
+matplotlib==3.6.2
     # via
     #   -r requirements.in
     #   seaborn
@@ -66,6 +68,7 @@ nodeenv==1.6.0
     # via pre-commit
 numpy==1.22.3
     # via
+    #   contourpy
     #   matplotlib
     #   pandas
     #   scipy
