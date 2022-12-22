@@ -2,8 +2,6 @@ name: Automagical updates
 
 on:
   workflow_dispatch:  # run manually
-  schedule:
-    - cron: '0 16 * * *'  # 08:00 pacific
 
 jobs:
   pre-commit:
