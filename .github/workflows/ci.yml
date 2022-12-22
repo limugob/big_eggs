@@ -100,7 +100,7 @@ jobs:
       #     DATABASE_URL: postgres://ci:github@localhost:5432/underdog
 
       - name: Upload test results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: pytest-results
           path: junit/test-results.xml
